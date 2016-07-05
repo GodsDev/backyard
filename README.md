@@ -82,3 +82,14 @@ Expected structure of geo related tables is in sql/poi.sql .
 backyard 3 usage
 -------------------
 NB: BackyardMysqli creates no Backyard->Mysqli object (as e.g. Backyard->Json does) because it is not used by LIB itself and more importantly user of LIB may create any number of those.
+
+@todo - to fix: on PHP/5.4.4 Backyard fails on LazyProperty:
+```
+[Mon Jul 04 10:53:37 2016] [error] [client 89.24.6.123] PHP Notice:  Undefined offset: 1 in /var/www/mobi-t-mobile-1-test.gods.cz/services/geo/api/1.0.1/vendor/ocramius/lazy-property/src/LazyProperty/LazyPropertiesTrait.php on line 73
+[Mon Jul 04 10:53:37 2016] [error] [client 89.24.6.123] PHP Catchable fatal error:  Argument 1 passed to LazyProperty\\Util\\AccessScopeChecker::checkCallerScope() must be of the type array, null given, called in /var/www/mobi-t-mobile-1-test.gods.cz/services/geo/api/1.0.1/vendor/ocramius/lazy-property/src/LazyProperty/LazyPropertiesTrait.php on line 77 and defined in /var/www/mobi-t-mobile-1-test.gods.cz/services/geo/api/1.0.1/vendor/ocramius/lazy-property/src/LazyProperty/Util/AccessScopeChecker.php on line 44
+```
+Either solve that 
+```php
+$caller = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT)[1]; 
+```
+has just one element (instead of many) and merge it back to release-3.0 or create release-3.1 which would require higher PHP version
