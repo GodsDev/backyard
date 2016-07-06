@@ -92,4 +92,28 @@ Either solve that
 ```php
 $caller = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT)[1]; 
 ```
-has just one element (instead of many) and merge it back to release-3.0 or create release-3.1 which would require higher PHP version
+has just one element (instead of many) and merge it back to release-3.0 or create release-3.1 which would require higher PHP version.
+(Or fork lazy-property where [0] field would be included into condition?)
+
+PHP traits need PHP/5.4.0 anyway.
+
+Note that
+```php
+<?php 
+//index.php 
+$Backyard = new \GodsDev\Backyard\Backyard($backyardConf);
+var_dump($Backyard->Http->retrieveFromPostThenGet('r'));
+```
+works
+while
+```php
+<?php 
+//index.php 
+$Backyard = new \GodsDev\Backyard\Backyard($backyardConf);
+
+<?php
+//other
+require_once 'index.php';
+var_dump($Backyard->Http->retrieveFromPostThenGet('r'));
+```
+fails even in PHP/5.5.12.
