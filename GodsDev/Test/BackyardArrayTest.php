@@ -46,7 +46,7 @@ class BackyardArrayTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers GodsDev\Backyard\BackyardArray::getOneColumnFromArray
-     * 
+     *
      * testGetOneColumnFromArrayNotArray not needed as the Argument 1 MUST be of the type array
      */
 //    public function testGetOneColumnFromArrayNotArray()
@@ -55,7 +55,7 @@ class BackyardArrayTest extends \PHPUnit_Framework_TestCase
 //        $columnName = "b";
 //        $columnAlwaysExpected = false;
 //        $expected = array();
-//        
+//
 //        $this->assertEquals($expected, $this->object->getOneColumnFromArray($myArray, $columnName, $columnAlwaysExpected));
 //    }
 
@@ -92,7 +92,7 @@ class BackyardArrayTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers GodsDev\Backyard\BackyardArray::removeOneColumnFromArray
-     * 
+     *
      * testRemoveOneColumnFromArrayNoArray() not needed as the Argument 1 MUST be of the type array
      */
 //    public function testRemoveOneColumnFromArrayNoArray()
@@ -100,7 +100,7 @@ class BackyardArrayTest extends \PHPUnit_Framework_TestCase
 //        $myArray = 1;
 //        $columnName = "b";
 //        $expected = array();
-//        
+//
 //        $this->assertEquals($expected, $this->object->removeOneColumnFromArray($myArray, $columnName));
 //    }
     public function testRemoveOneColumnFromArray()
@@ -251,5 +251,4 @@ class BackyardArrayTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $this->object->arrayDiffAssocRecursive($array1, $array1));
     }
-
 }

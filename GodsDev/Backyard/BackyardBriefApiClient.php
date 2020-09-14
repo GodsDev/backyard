@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Very simple JSON RESTful API client
  * It just sends (by HTTP POST) JSON and returns what is to be returned with few optional decorators and error logging.
- * 
+ *
  * @todo Probably should be refactored using backyard json and http
  *
  * @author rejth
@@ -17,7 +17,7 @@ class BackyardBriefApiClient
 
     /**
      *
-     * @var \Psr\Log\LoggerInterface 
+     * @var \Psr\Log\LoggerInterface
      */
     protected $logger;
 
@@ -34,7 +34,7 @@ class BackyardBriefApiClient
     private $appLogFolder;
 
     /**
-     * 
+     *
      * @param string $apiUrl
      * @param mixed $appLogFolder OPTIONAL string without trailing / or if null then the applogs will not be saved at all
      * @param \Psr\Log\LoggerInterface $logger OPTIONAL but really recommended
@@ -49,7 +49,7 @@ class BackyardBriefApiClient
 
     /**
      * Each call returns string starting with timestamp and ending with unique identifier based on the current time in microseconds.
-     * 
+     *
      * @return string
      */
     private function getCommunicationId()
@@ -59,13 +59,13 @@ class BackyardBriefApiClient
 
     /**
      * Send a JSON to the API and returns whatever is to return
-     * 
+     *
      * @param string $json
      * @param string $httpVerb POST default, or PUT/DELETE/GET
      * @return mixed <b>TRUE</b> on success or <b>FALSE</b> on failure. However, if the <b>CURLOPT_RETURNTRANSFER</b>
      * option is set, it will return
      * the result on success, <b>FALSE</b> on failure.
-     * 
+     *
      * TODO: use BackyardHttp/getData incl. logging instead of another code inside sendJsonLoad method
      */
     public function sendJsonLoad($json, $httpVerb = 'POST')
@@ -82,6 +82,7 @@ class BackyardBriefApiClient
         switch ($httpVerb) {
             case 'POST':
                 curl_setopt($ch, CURLOPT_POST, true);
+            // no break
             case 'GET':
             case 'DELETE':
                 curl_setopt_array($ch, array(
@@ -118,7 +119,7 @@ class BackyardBriefApiClient
     }
 
     /**
-     * 
+     *
      * @param string $message
      * @param string $filePrefix
      * @param string $communicationId
@@ -134,7 +135,7 @@ class BackyardBriefApiClient
 
     /**
      * Sends JSON and return array decoded from the received JSON response
-     * 
+     *
      * @param string $json
      * @return array
      */
@@ -150,7 +151,7 @@ class BackyardBriefApiClient
 
     /**
      * Translates array to JSON, send it to API and return array decoded from the received JSON response
-     * 
+     *
      * @param array $arr
      * @return array
      */
@@ -158,5 +159,4 @@ class BackyardBriefApiClient
     {
         return $this->getJsonArray(json_encode($arr));
     }
-
 }

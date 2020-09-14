@@ -13,10 +13,10 @@ class BackyardTime
     }
 
     /**
-     * Initiation of $page_timestamp must be the first thing a page will do 
+     * Initiation of $page_timestamp must be the first thing a page will do
      * Store "time" for benchmarking.
      * Inspired by sb_functions.php in sphpblog
-     * 
+     *
      * @return float
      */
     public function getmicrotime()
@@ -25,12 +25,12 @@ class BackyardTime
             list($usec, $sec) = explode(' ', microtime());
             return ((float) $usec + (float) $sec);
         } else {
-            return( microtime(true) );
+            return(microtime(true));
         }
     }
 
     /**
-     * 
+     *
      * @return float
      */
     public function getPageTimestamp()
@@ -39,7 +39,7 @@ class BackyardTime
     }
 
     /**
-     * 
+     *
      * @return float
      */
     public function getRunningTime()
@@ -59,7 +59,6 @@ class BackyardTime
         //$this->BackyardError->log(6, round($this->getmicrotime() - $this->PageTimestamp, 4), array(6));
         return $str;
     }
-
 }
 
 /**

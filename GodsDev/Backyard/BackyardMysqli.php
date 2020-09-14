@@ -17,7 +17,7 @@ use GodsDev\Backyard\BackyardError; // not use Psr\Log\LoggerInterface; because 
  * @param string $pass
  * @param string $db
  * @param BackyardError $BackyardError
- * 
+ *
  * To open as persistent use: $connection = new backyard_mysqli('p:' . $dbhost, $dbuser, $dbpass, $dbname);
  * class backyard_mysqli based on my_mysqli from https://github.com/GodsDev/repo1/blob/58fa783d4c7128579b729465dc36b45568f9ddb1/myreport/src/mreport_functions.php as of 120914
  * Sets the connection charset to utf-8 and collation to utf8_general_ci
@@ -29,7 +29,7 @@ class BackyardMysqli extends \mysqli
     protected $BackyardError = null;
 
     /**
-     * 
+     *
      * @param string $host_port accepts either hostname (or IPv4) or hostname:port
      * @param string $user
      * @param string $pass
@@ -82,11 +82,11 @@ class BackyardMysqli extends \mysqli
      * Query method
      * if everything is OK, return the mysqli_result object
      * that is returned from parent query method
-     * 
+     *
      * 120914, inspired by http://www.blrf.net/blog/223/code/php/extending-mysqli-class-with-example/
-     * 
+     *
      * @param string $sql SQL to execute
-     * @return mysqli_result Object|false
+     * @return \mysqli_result Object|false
      * @throws DBQueryException
      */
     public function query($sql, $ERROR_LOG_OUTPUT = true)
@@ -98,7 +98,7 @@ class BackyardMysqli extends \mysqli
         if (empty($sql) || !is_string($sql)) {
             if ($ERROR_LOG_OUTPUT) {
                 $this->BackyardError->log(1, "No mysql_query_string set. End of query", array(11)); //debug
-                //my_error_log("End of query", 6, 11);                
+                //my_error_log("End of query", 6, 11);
             }
             return false;
         }
@@ -127,7 +127,7 @@ class BackyardMysqli extends \mysqli
      * temporary note: Replaces customMySQLQuery()
      * @param string $sql
      * @param boolean $justOneRow (default = false)
-     * @return 
+     * @return mixed
      *      false - if no results
      *      one dimensional array - if $justOneRow == true
      *      two dimensional array - if $justOneRow == false
@@ -159,7 +159,7 @@ class BackyardMysqli extends \mysqli
      * Find the next available id within selected dimension.
      * It may be conditioned by an integer value of another dimension
      * (Replacement for int function findFirstAvailableIdInRelevantTable($table, $ownerId, $relevantMetric))
-     * 
+     *
      * @param string $table
      * @param string $metricDimension
      * @param string $primaryDimension [optional]
@@ -178,5 +178,4 @@ class BackyardMysqli extends \mysqli
         }
         return $result;
     }
-
 }

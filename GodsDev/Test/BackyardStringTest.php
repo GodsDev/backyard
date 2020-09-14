@@ -44,5 +44,4 @@ class BackyardStringTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('PRILIS ZLUTOUCKY KUN UPEL DABELSKE ODY.', $this->object->stripDiacritics('PŘÍLIŠ ŽLUŤOUČKÝ KŮŇ ÚPĚL ĎÁBELSKÉ ÓDY.'));
         $this->assertEquals('Blizkost', $this->object->stripDiacritics('Blízkost'));
     }
-
 }

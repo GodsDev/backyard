@@ -17,14 +17,13 @@ class BackyardArray
     protected $logger;
 
     /**
-     * 
+     *
      * @param LoggerInterface $logger
      */
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
-
     /**
      * Note http://php.net/manual/en/function.array-key-exists.php#107786
      * If you want to take the performance advantage of isset() while keeping the null element correctly detected, use this:
@@ -33,20 +32,20 @@ class BackyardArray
       {
       ...
       }
-     * 
+     *
      */
 
     /**
      * A version of in_array() that supports wildcards in the haystack.
-     * 
+     *
      * http://www.php.net/manual/en/function.in-array.php#67159
      * //Unfortunately, fnmatch() is not available on Windows or other non-POSIX compliant systems.
-     * 
+     *
      * Example:
      * $haystack = array('*krapplack.de');
      * $needle = 'www.krapplack.de';
-     * echo backyard_inArrayWildcards($needle, $haystack); # outputs "true" * 
-     * 
+     * echo backyard_inArrayWildcards($needle, $haystack); # outputs "true" *
+     *
      * @param string $needle
      * @param array $haystack
      * @return boolean
@@ -64,7 +63,7 @@ class BackyardArray
     /**
      * Returns array named $columnName from $myArray
      * Ignores rows where the field $columnName is not set
-     * 
+     *
      * @param array $myArray at least two-dimensional
      * @param string $columnName
      * @param bool $columnAlwaysExpected default false; if true function does log the missing column in a row as an error
@@ -88,7 +87,7 @@ class BackyardArray
 
     /**
      * Returns array $myArray without column named in $columnName
-     * 
+     *
      * @param array $myArray
      * @param string $columnName
      * @return array
@@ -111,12 +110,12 @@ class BackyardArray
         //@todo measure if the following pattern wouldn't be faster while having exactly the same results
 //        foreach($myArray as $k => $v) {
 //            unset($myArray[$k][$columnName]);
-//        }        
+//        }
     }
 
     /**
      * Return $myArray as a one-line string
-     * 
+     *
      * @param array $myArray
      * @return string
      */
@@ -124,9 +123,15 @@ class BackyardArray
     {
         return (
             preg_replace(
-                '/\n/', ' ', preg_replace(
-                    '/\r/', ' ', preg_replace(
-                        '/\s\s+/', ' ', print_r($myArray, true)
+                '/\n/',
+                ' ',
+                preg_replace(
+                    '/\r/',
+                    ' ',
+                    preg_replace(
+                        '/\s\s+/',
+                        ' ',
+                        print_r($myArray, true)
                     )
                 )
             )
@@ -136,7 +141,7 @@ class BackyardArray
     /**
      * Returns first row with exact match //@TODO 4 - přidat parametr na vrácení všech rows s exact match
      * Useful for at least 2-dimensional arrays
-     * 
+     *
      * @param mixed $searchedValue
      * @param array $searchedArray
      * @param string $columnName
@@ -176,8 +181,6 @@ class BackyardArray
       Contributors included (Michael Johnson), (jochem AT iamjochem DAWT com),
       (sc1n AT yahoo DOT com), and (anders DOT carlsson AT mds DOT mdh DOT se).]
      *
-     *  
-     * 
      * @param array $array1
      * @param array $array2
      * @return mixed (array|0)
@@ -202,5 +205,4 @@ class BackyardArray
         }
         return isset($difference) ? $difference : 0;
     }
-
 }

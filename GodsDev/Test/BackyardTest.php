@@ -41,5 +41,4 @@ class BackyardTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $this->object->Json->minifyJSON($orig));
     }
-
 }

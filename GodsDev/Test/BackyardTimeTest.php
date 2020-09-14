@@ -72,5 +72,4 @@ class BackyardTimeTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, substr($this->object->pageGeneratedIn($langStringPageGeneratedIn), 0, strlen($expected)));
     }
-
 }

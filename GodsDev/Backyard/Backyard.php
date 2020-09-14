@@ -60,7 +60,7 @@ class Backyard
     public $PageTimestamp;
 
     /**
-     * 
+     *
      * @param array $backyardConfConstruct
      */
     public function __construct(array $backyardConfConstruct = array())
@@ -77,7 +77,7 @@ class Backyard
     }
 
     /**
-     * 
+     *
      * @param string $host_port
      * @param string $user
      * @param string $pass
@@ -88,5 +88,4 @@ class Backyard
     {
         return new BackyardMysqli($host_port, $user, $pass, $db, $this->BackyardError);
     }
-
 }
