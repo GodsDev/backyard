@@ -6,10 +6,10 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/godsdev/backyard.svg)](https://packagist.org/packages/godsdev/backyard)
 
 
-## Requirements ##
+## Requirements
 * [PHP 5.3.0 or higher](http://www.php.net/) (i.e. not used [] instead of array() as this short syntax can be used only since PHP 5.4)
 
-## Installation ##
+## Installation
 
 You can use **Composer** or simply **Download the Release**
 
@@ -67,12 +67,12 @@ $backyard = new \GodsDev\Backyard\Backyard(
         'log_standard_output'       => false,   //true, pokud má zároveň vypisovat na obrazovku; false, pokud má vypisovat jen do logu
         'log_profiling_step'        => false,   //110812, my_error_log neprofiluje rychlost //$PROFILING_STEP = 0.008;//110812, my_error_log profiluje čas mezi dvěma měřenými body vyšší než udaná hodnota sec
         'error_hacked'              => true,    //ERROR_HACK parameter is reflected
-        'error_hack_from_get'       => 0,       //in this field, the value of $_GET['ERROR_HACK'] shall be set below                    
+        'error_hack_from_get'       => 0,       //in this field, the value of $_GET['ERROR_HACK'] shall be set below
 
         //geo relevant
         'geo_rough_distance_limit' => 1, //float //to quickly get rid off too distant POIs; 1 ~ 100km
         'geo_maximum_meters_from_poi' => 2500, //float //distance considered to be overlapping with the device position // 2500 m is considered exact location due to mobile phone GPS caching
-        'geo_poi_list_table_name' => 'poi_list', //string //name of table with POI coordinates   
+        'geo_poi_list_table_name' => 'poi_list', //string //name of table with POI coordinates
     )
 );
 ```
@@ -103,7 +103,7 @@ It just sends JSON and returns what is to be returned with few optional decorato
 
 ### backyard 1 usage
 
-This array MUST be created by the application before invoking backyard 1    
+This array MUST be created by the application before invoking backyard 1
 ```php
 $backyardDatabase = array(
     'dbhost' => 'localhost',

@@ -31,7 +31,7 @@ class BackyardStringTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
+        // no action
     }
 
     /**

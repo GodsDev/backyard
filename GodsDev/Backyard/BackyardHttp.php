@@ -161,7 +161,7 @@ class BackyardHttp
      * @param string $customRequest OPTIONAL fills in CURLOPT_CUSTOMREQUEST
      * @return array ('message_body', 'HTTP_CODE', 'CONTENT_TYPE', 'HEADER_FIELDS', ['REDIRECT_URL',])
      */
-    public function getData($url, $useragent = 'PHP/cURL', $timeout = 5, $customHeaders = false, $postArray = array(), $customRequest = null)
+    public function getData($url, $useragent = 'PHP/cURL', $timeout = 5, $customHeaders = false, array $postArray = array(), $customRequest = null)
     {
         $this->logger->log(5, "backyard getData({$url},{$useragent},{$timeout},{$customHeaders}," . (empty($postArray) ? '[]' : (count($postArray) . ' fields')) . ",{$customRequest});", array(16));
         $ch = curl_init();
@@ -228,11 +228,13 @@ class BackyardHttp
         }
 
         // $fields contains array of string which are lines of response header
-        $fields = explode("\r\n", preg_replace(
+        $fields = explode("\r\n",
+            preg_replace(
                 '/\x0D\x0A[\x09\x20]+/',
                 ' ',
                 substr($response, 0, $header_size) // message header
-        ));
+            )
+        );
         $retVal = array();
         // http://stackoverflow.com/a/4243667
         foreach ($fields as $field) {

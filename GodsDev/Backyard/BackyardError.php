@@ -211,7 +211,8 @@ class BackyardError extends AbstractLogger implements LoggerInterface
         //    $this->BackyardConf['logging_level'] = $ERROR_HACK; //120918
         //}
 
-        if ((
+        if (
+            (
             $level <= max(array(
                 $this->BackyardConf['logging_level'],
                 $this->BackyardConf['error_hack_from_get'], //set potentially as GET parameter
@@ -279,10 +280,17 @@ class BackyardError extends AbstractLogger implements LoggerInterface
     {
         $this->log(1, "Die with error {$errorNumber} - {$errorString}");
         if ($feedbackButtonMarkup) {
-            echo("<html><body>" . str_replace(urlencode("%CUSTOM_VALUE%"), urlencode(
+            echo(
+            "<html><body>"
+            . str_replace(
+                urlencode("%CUSTOM_VALUE%"),
+                urlencode(
                     "Error {$errorNumber} - "
                     . (($this->BackyardConf['die_graciously_verbose']) ? " - {$errorString}" : "")
-                ), $feedbackButtonMarkup)); //<html><body> na začátku pomůže, pokud ještě výstup nezačal
+                ),
+                $feedbackButtonMarkup
+            )
+            ); //<html><body> na začátku pomůže, pokud ještě výstup nezačal
         }
         die("Error {$errorNumber}" . (($this->BackyardConf['die_graciously_verbose']) ? " - {$errorString}" : ""));
     }

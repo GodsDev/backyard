@@ -39,11 +39,12 @@ class BackyardTime
     }
 
     /**
+     * Note: 111105, because $RUNNING_TIME got updated only when my_error_log makes a row
      *
      * @return float
      */
     public function getRunningTime()
-    {//111105, because $RUNNING_TIME got updated only when my_error_log makes a row
+    {
         return round($this->getmicrotime() - $this->PageTimestamp, 4);
     }
 

@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:ignoreFile
 error_log(__FILE__ . ' is obsolete - consider its rewriting'); //TODO: rewrite into a standard static Class
 die('LIB2'); //security die
 /* * ****************************************************************************

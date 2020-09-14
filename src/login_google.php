@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:ignoreFile
 error_log(__FILE__ . ' is obsolete and will be removed in next release');
 die('LIB2'); //security die
 /**

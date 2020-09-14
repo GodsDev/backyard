@@ -2,12 +2,15 @@
 
 namespace GodsDev\Backyard;
 
-use GodsDev\Backyard\BackyardError; // not use Psr\Log\LoggerInterface; because method dieGraciously is used
-
-//@TODO create TestBackyardMysqli.php
+use GodsDev\Backyard\BackyardError;
 
 /* * ****************************************************************************
  * Database (MySQL) FUNCTIONS
+ *
+ * TODO create TestBackyardMysqli.php
+ * TODO compare admins vs user for throw new \Exception vs dieGraciously and if migrated to Exception:
+ * use Psr\Log\LoggerInterface instad of GodsDev\Backyard\BackyardError
+ *
  */
 
 /**
@@ -19,13 +22,13 @@ use GodsDev\Backyard\BackyardError; // not use Psr\Log\LoggerInterface; because 
  * @param BackyardError $BackyardError
  *
  * To open as persistent use: $connection = new backyard_mysqli('p:' . $dbhost, $dbuser, $dbpass, $dbname);
- * class backyard_mysqli based on my_mysqli from https://github.com/GodsDev/repo1/blob/58fa783d4c7128579b729465dc36b45568f9ddb1/myreport/src/mreport_functions.php as of 120914
+ * class backyard_mysqli based on my_mysqli from
+ * https://github.com/GodsDev/repo1/blob/58fa783d4c7128579b729465dc36b45568f9ddb1/myreport/src/mreport_functions.php as of 120914
  * Sets the connection charset to utf-8 and collation to utf8_general_ci
  * @todo add IPv6 , e.g ::1 as $host_port
  */
 class BackyardMysqli extends \mysqli
 {
-
     protected $BackyardError = null;
 
     /**
@@ -69,7 +72,10 @@ class BackyardMysqli extends \mysqli
         }
 
         if ($this->connect_error) {
-            $this->BackyardError->dieGraciously('5013', "Connect Error ({$this->connect_errno}) {$this->connect_error} | {$tempErrorString}");
+            $this->BackyardError->dieGraciously(
+                '5013',
+                "Connect Error ({$this->connect_errno}) {$this->connect_error} | {$tempErrorString}"
+            );
         }
 
         //change character set to utf8
@@ -87,7 +93,6 @@ class BackyardMysqli extends \mysqli
      *
      * @param string $sql SQL to execute
      * @return \mysqli_result Object|false
-     * @throws DBQueryException
      */
     public function query($sql, $ERROR_LOG_OUTPUT = true)
     {
@@ -123,8 +128,11 @@ class BackyardMysqli extends \mysqli
     }
 
     /**
-     * Make a MySQL query and if the result is non empty, transforms the query result into a one or two dimensional array.
+     * Make a MySQL query and if the result is non empty,
+     * transforms the query result into a one or two dimensional array.
+     *
      * temporary note: Replaces customMySQLQuery()
+     *
      * @param string $sql
      * @param boolean $justOneRow (default = false)
      * @return mixed

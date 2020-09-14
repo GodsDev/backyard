@@ -22,7 +22,7 @@ class BackyardArrayTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new BackyardArray(new BackyardError);
+        $this->object = new BackyardArray(new BackyardError());
     }
 
     /**
@@ -31,7 +31,7 @@ class BackyardArrayTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        
+        // no action
     }
 
     /**

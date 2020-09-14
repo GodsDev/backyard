@@ -1,5 +1,5 @@
 <?php
-
+// phpcs:ignoreFile
 error_log(__FILE__ . ' is obsolete - consider its rewriting');
 die('LIB2'); //security die
 //backyard 2 compliant
