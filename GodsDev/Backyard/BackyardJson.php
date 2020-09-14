@@ -125,7 +125,7 @@ class BackyardJson
         $timeout = 5,
         $customHeaders = false,
         array $postArray = array()
-    ){
+    ) {
         $result = $this->BackyardHttp->getData($url, $useragent, $timeout, $customHeaders, $postArray);
         $json = $result['message_body'];
         if (!$json) {

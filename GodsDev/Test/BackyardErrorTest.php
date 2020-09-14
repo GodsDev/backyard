@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @todo how to test this?
  */
