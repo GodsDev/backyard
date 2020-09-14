@@ -1,5 +1,5 @@
-Library In Backyard
-===================
+# Library In Backyard
+
 **Collection of useful functions**
 
 [![Total Downloads](https://img.shields.io/packagist/dt/godsdev/backyard.svg)](https://packagist.org/packages/godsdev/backyard)
@@ -98,11 +98,10 @@ It just sends JSON and returns what is to be returned with few optional decorato
 * `getArrayArray` - encode array to a JSON and returns array decoded from response JSON
 
 
-# About previous versions
+## About previous versions
 *Their code is disabled and therefore secured.*
 
-backyard 1 usage
--------------------
+### backyard 1 usage
 
 This array MUST be created by the application before invoking backyard 1    
 ```php
@@ -120,8 +119,7 @@ require_once __DIR__ . '/lib/backyard/deploy/functions.php';
 ```
 
 
-backyard 2 usage
--------------------
+### backyard 2 usage
 
 The array $backyardDatabase (see above) SHOULD be created ONLY IF there is a table \`system\` (or different name stated in $backyardDatabase['system_table_name']) with fields containing backyard system info.
 
@@ -158,7 +156,7 @@ src/emulate.php is an envelope for emulator.php
 Geolocation functions described in src/backyard_geo.php .
 Expected structure of geo related tables is in sql/poi.sql .
 
-# Naming conventions (2013-05-04)
+### Naming conventions (2013-05-04)
 1. Naming conventions
     - I try to produce long, self-explaining method names.
     - Comments formatted as Phpdoc, JSDoc
