@@ -35,7 +35,7 @@ class BackyardJson
     }
 
     /**
-     * @desc Minify JSON and if JSON is not valid it reports it 
+     * @desc Minify JSON and if JSON is not valid it reports it
      * in the my_error_log and outputs a preformatted error500 json string
      *
      * @param string $jsonInput
@@ -87,7 +87,8 @@ class BackyardJson
      * @param   bool    $assoc   When true, returned objects will be converted into associative arrays.
      * @param   int     $depth   User specified recursion depth. (>=5.3)
      * @param   int     $options Bitmask of JSON decode options. (>=5.4)
-     * @return  mixed array or null is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit.
+     * @return  mixed array or null is returned if the json cannot be decoded
+     *                              or if the encoded data is deeper than the recursion limit.
      */
     public function jsonCleanDecode($json2decode, $assoc = false, $depth = 512, $options = 0)
     {
@@ -124,8 +125,7 @@ class BackyardJson
         $timeout = 5,
         $customHeaders = false,
         array $postArray = array()
-    )
-    {
+    ){
         $result = $this->BackyardHttp->getData($url, $useragent, $timeout, $customHeaders, $postArray);
         $json = $result['message_body'];
         if (!$json) {

@@ -228,7 +228,8 @@ class BackyardHttp
         }
 
         // $fields contains array of string which are lines of response header
-        $fields = explode("\r\n",
+        $fields = explode(
+            "\r\n",
             preg_replace(
                 '/\x0D\x0A[\x09\x20]+/',
                 ' ',
