@@ -27,12 +27,17 @@ class BackyardGeo
      */
     public function __construct(LoggerInterface $BackyardError, array $backyardConfConstruct = array())
     {
-        //@todo do not use $this->BackyardConf but set the class properties right here accordingly; and also provide means to set the values otherwise later
+        //@todo do not use $this->BackyardConf but set the class properties right here accordingly;
+        //@todo also provide means to set the values otherwise later
         $this->BackyardConf = array_merge(
             array(//default values
-                'geo_rough_distance_limit' => 1, //float //to quickly get rid off too distant POIs; 1 ~ 100km
-                'geo_maximum_meters_from_poi' => 2500, //float //distance considered to be overlapping with the device position // 2500 m is considered exact location due to mobile phone GPS caching
-                'geo_poi_list_table_name' => 'poi_list', //string //name of table with POI coordinates
+                //to quickly get rid off too distant POIs; 1 ~ 100km
+                'geo_rough_distance_limit' => 1, //float
+                //distance considered to be overlapping with the device position
+                // 2500 m is considered exact location due to mobile phone GPS caching
+                'geo_maximum_meters_from_poi' => 2500, //float
+                //name of table with POI coordinates
+                'geo_poi_list_table_name' => 'poi_list', //string
             ),
             $backyardConfConstruct
         );
@@ -58,17 +63,24 @@ class BackyardGeo
      *
      * To do that it uses following material functions:
      * array backyard_getListOfPOINearby (float $lat, float $long, int|string $poiCategory, object $poiConnection)
-     * float backyard_calculateDistanceFromLatLong( array('latitude','longitude') $point1, array('latitude','longitude') $point2, string $uom='km')
+     * float backyard_calculateDistanceFromLatLong( array('latitude','longitude') $point1,
+     *                                              array('latitude','longitude') $point2, string $uom='km')
      *
      *
      * Global variable $backyardConf contains following relevant fields:
-     * $backyardConf['geo_rough_distance_limit']=1;          //float //to quickly get rid off too distant POIs; 1 ~ 100km
-     * $backyardConf['geo_maximum_meters_from_poi']=2500;    //float //distance considered to be overlapping with the device position // 2500 m is considered exact location due to mobile phone GPS caching //used only by application not by backyard_geo.php script
-     * $backyardConf['geo_poi_list_table_name']              //string //name of table with POI coordinates
+     * //float //to quickly get rid off too distant POIs; 1 ~ 100km
+     * $backyardConf['geo_rough_distance_limit']=1;
+     * //float //distance considered to be overlapping with the device position
+     * // 2500 m is considered exact location due to mobile phone GPS caching
+     * //used only by application not by backyard_geo.php script
+     * $backyardConf['geo_maximum_meters_from_poi']=2500;
+     * //string //name of table with POI coordinates
+     * $backyardConf['geo_poi_list_table_name']
      *
      * @TODO 4 - dovysvětlit -
      * Voláno bylo takto:
-      https://github.com/GodsDev/repo1/blob/master/checkin/api_2.php s GET parametry lat=&lng=&event=odpichGPS a odpovědí byl JSON vypočítaný jako:
+      https://github.com/GodsDev/repo1/blob/master/checkin/api_2.php
+     * s GET parametry lat=&lng=&event=odpichGPS a odpovědí byl JSON vypočítaný jako:
       $jsonResult = GetStatusJSON ($userId,$inputLat,$inputLong)
       /definováno také v https://github.com/GodsDev/repo1/blob/master/checkin/functions.php /
 
@@ -101,7 +113,10 @@ class BackyardGeo
     public function getRoughDistance($clientLng, $clientLat, $poiLng, $poiLat)
     {
         $result = abs($clientLng - $poiLng) + abs($clientLat - $poiLat);
-        $this->BackyardError->log(5, "client({$clientLng}, {$clientLat}) poi({$poiLng}, {$poiLat}) roughDistance = {$result}");
+        $this->BackyardError->log(
+            5,
+            "client({$clientLng}, {$clientLat}) poi({$poiLng}, {$poiLat}) roughDistance = {$result}"
+        );
         return $result;
     }
 
@@ -113,7 +128,8 @@ class BackyardGeo
      *
      * @param float $lat (in database as double)
      * @param float $long (in database as double)
-     * @param mixed $poiCategory (may be integer or string with comma separated integers) according to table set in $backyardConf['geo_poi_list_table_name']
+     * @param mixed $poiCategory (integer|string with comma separated integers)
+     *                           according to table set in $backyardConf['geo_poi_list_table_name']
      * @param BackyardMysqli $poiConnection
      * @return array|boolean false if empty
      */
@@ -145,12 +161,17 @@ class BackyardGeo
                 'adresa' => $row['adresa'],
                 'lng' => $row['long'],
                 'lat' => $row['lat'],
-                'roughDistance' => $this->getRoughDistance($long, $lat, $row['long'], $row['lat'])// abs($long - $row['long']) + abs($lat - $row['lat'])
+                // abs($long - $row['long']) + abs($lat - $row['lat'])
+                'roughDistance' => $this->getRoughDistance($long, $lat, $row['long'], $row['lat'])
             );
             $roughDistance[$key] = $listOfPOINearbyPreprocessed[$key]['roughDistance'];
         }
 
-        $this->BackyardError->log(4, 'Count of rows listOfPOINearbyPreprocessed: ' . count($listOfPOINearbyPreprocessed), array(11));
+        $this->BackyardError->log(
+            4,
+            'Count of rows listOfPOINearbyPreprocessed: ' . count($listOfPOINearbyPreprocessed),
+            array(11)
+        );
         array_multisort($roughDistance, SORT_ASC, $listOfPOINearbyPreprocessed);
 
         $distanceArray = array();
@@ -174,11 +195,16 @@ class BackyardGeo
         if (!$listOfPOINearbyProcessed) {
             return false;
         }
-        $this->BackyardError->log(4, 'Count of rows listOfPOINearbyProcessed: ' . count($listOfPOINearbyProcessed), array(11));
+        $this->BackyardError->log(
+            4,
+            'Count of rows listOfPOINearbyProcessed: ' . count($listOfPOINearbyProcessed),
+            array(11)
+        );
         return array(
             'distance_m' => (int) floor($listOfPOINearbyProcessed[0]['distance']),
             'poi_id' => $listOfPOINearbyProcessed[0]['poi_id'],
-            'type_address' => $listOfPOINearbyProcessed[0]['category'] . ' ' . $listOfPOINearbyProcessed[0]['adresa'], //@todo category name instead of category id
+            //@todo category name instead of category id
+            'type_address' => $listOfPOINearbyProcessed[0]['category'] . ' ' . $listOfPOINearbyProcessed[0]['adresa'],
             'address' => $listOfPOINearbyProcessed[0]['adresa'],
             'city' => $listOfPOINearbyProcessed[0]['mesto'],
             'type' => $listOfPOINearbyProcessed[0]['category'], //@todo category name instead of category id
@@ -196,7 +222,8 @@ class BackyardGeo
      * @param BackyardMysqli $poiConnection
      * @return mixed (array or false)
      *
-     * bacykard_getListOfPOINearby ($poiCategory, $lat , $long) might be created to preselect from the database only those that do not overpass the perpendicular backyardGeo['rough_distance_limit']
+     * bacykard_getListOfPOINearby ($poiCategory, $lat , $long) might be created to preselect from the database
+     * only those that do not overpass the perpendicular backyardGeo['rough_distance_limit']
      */
     public function getListOfPOI($poiCategory, BackyardMysqli $poiConnection)
     {
@@ -206,7 +233,8 @@ class BackyardGeo
         } else {
             $poiCategorySecured = preg_replace("/[^0-9,]/", '', $poiCategory);
         }
-        $query = "SELECT * FROM `{$this->BackyardConf['geo_poi_list_table_name']}` WHERE `category` IN ( " . $poiCategorySecured . " )";
+        $query = "SELECT * FROM `{$this->BackyardConf['geo_poi_list_table_name']}`"
+            . " WHERE `category` IN ( " . $poiCategorySecured . " )";
         $listOfPOINearby = $poiConnection->queryArray($query);
         if (!$listOfPOINearby) {
             $this->BackyardError->log(2, 'No result for query ' . $query, array(11));

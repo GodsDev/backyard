@@ -36,7 +36,7 @@ class BackyardBriefApiClient
     /**
      *
      * @param string $apiUrl
-     * @param mixed $appLogFolder OPTIONAL string without trailing / or if null then the applogs will not be saved at all
+     * @param mixed $appLogFolder OPTIONAL string without trailing / or if null => the applogs will not be saved at all
      * @param \Psr\Log\LoggerInterface $logger OPTIONAL but really recommended
      */
     public function __construct($apiUrl, $appLogFolder = null, LoggerInterface $logger = null)
@@ -48,7 +48,8 @@ class BackyardBriefApiClient
     }
 
     /**
-     * Each call returns string starting with timestamp and ending with unique identifier based on the current time in microseconds.
+     * Each call returns string starting with timestamp
+     * and ending with unique identifier based on the current time in microseconds.
      *
      * @return string
      */
@@ -77,7 +78,9 @@ class BackyardBriefApiClient
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POSTFIELDS => $json, //json_encode($postData)
             CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false, //accepts also private SSL certificates //@todo it could be possible to try without that option and if it fails, it may try with this option and inform about it
+            //accepts also private SSL certificates
+            //@todo try without that option and if it fails, it may try with this option and inform about it
+            CURLOPT_SSL_VERIFYHOST => false,
         ));
         switch ($httpVerb) {
             case 'POST':
@@ -130,7 +133,12 @@ class BackyardBriefApiClient
         if (!$this->appLogFolder) {
             return false;
         }
-        return error_log($message, 3, "{$this->appLogFolder}/{$filePrefix}-" . ($communicationId ? $communicationId : $this->getCommunicationId()) . ".json");
+        return error_log(
+            $message,
+            3,
+            "{$this->appLogFolder}/{$filePrefix}-"
+            . ($communicationId ? $communicationId : $this->getCommunicationId()) . ".json"
+        );
     }
 
     /**
@@ -144,7 +152,9 @@ class BackyardBriefApiClient
         $response = $this->sendJsonLoad($json);
         $result = json_decode($response, true);
         if (!$result && !is_null($this->logger)) {
-            $this->logger->error("json decode failed for " . substr($response, 0, 100) . " that resulted from " . substr($json, 0, 100));
+            $this->logger->error("json decode failed for " . substr($response, 0, 100)
+                . " that resulted from " . substr($json, 0, 100)
+            );
         }
         return $result;
     }

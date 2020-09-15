@@ -66,7 +66,8 @@ class Backyard
     public function __construct(array $backyardConfConstruct = array())
     {
         $this->BackyardTime = new BackyardTime();
-        $this->PageTimestamp = $this->BackyardTime->getPageTimestamp(); //Initiation of $page_timestamp SHOULD be the first thing a page will do.
+        //Initiation of $page_timestamp SHOULD be the first thing a page will do.
+        $this->PageTimestamp = $this->BackyardTime->getPageTimestamp();
         $this->BackyardConf = $backyardConfConstruct;
         $this->BackyardError = new BackyardError($this->BackyardConf, $this->BackyardTime);
         $this->BackyardArray = new BackyardArray($this->BackyardError);

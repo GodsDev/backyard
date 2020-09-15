@@ -160,9 +160,10 @@ class BackyardMysqli extends \mysqli
      */
     public function nextIncrement($table, $metricDimension, $primaryDimension = '', $primaryDimensionValue = 0)
     {
-        $result = 1; //default value
+        $result = 1; // default value
         $query = "SELECT `{$metricDimension}` FROM `{$table}` "
-            . (((bool) $primaryDimension && $metricDimension != $primaryDimension) ? ("WHERE  `{$primaryDimension}` =" . (int) $primaryDimensionValue . " ") : (""))
+            . (((bool) $primaryDimension && $metricDimension != $primaryDimension) // conditional dimension: WHERE
+            ? ("WHERE `{$primaryDimension}` =" . (int) $primaryDimensionValue . " ") : (""))
             . " ORDER BY `{$metricDimension}` DESC LIMIT 0 , 1;";
         $mysql_query_array = $this->queryArray($query, true);
         if ($mysql_query_array) {

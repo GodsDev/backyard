@@ -128,7 +128,11 @@ class BackyardHttp
                 $result = $_GET[$nameOfTheParameter];
             }
         }
-        $this->logger->log((($result) ? (5) : (6)), "Retrieved parameter {$nameOfTheParameter}: " . print_r($result, true), array(16));
+        $this->logger->log(
+            (($result) ? (5) : (6)),
+            "Retrieved parameter {$nameOfTheParameter}: " . print_r($result, true),
+            array(16)
+        );
         return $result;
     }
 
@@ -142,7 +146,9 @@ class BackyardHttp
     {
         $isHTTPS = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on");
         return ($isHTTPS ? 'https://' : 'http://') . $_SERVER["SERVER_NAME"]
-            . ((isset($_SERVER["SERVER_PORT"]) && ((!$isHTTPS && $_SERVER["SERVER_PORT"] != "80") || ($isHTTPS && $_SERVER["SERVER_PORT"] != "443"))) ? ':' . $_SERVER["SERVER_PORT"] : '') // port
+            . ((isset($_SERVER["SERVER_PORT"]) && //
+            ((!$isHTTPS && $_SERVER["SERVER_PORT"] != "80") || ($isHTTPS && $_SERVER["SERVER_PORT"] != "443"))) //
+            ? ':' . $_SERVER["SERVER_PORT"] : '') // port
             . (
             $includeTheQueryPart ? $_SERVER["REQUEST_URI"] // including RewriteRule result
             : $_SERVER["SCRIPT_NAME"] // without the query part and RewriteRule result
@@ -156,25 +162,44 @@ class BackyardHttp
      * @param string $url
      * @param string $useragent default = 'PHP/cURL'
      * @param int $timeout [seconds] default =5
-     * @param mixed $customHeaders string|false default = false; string of HTTP headers delimited by pipe without trailing spaces
-     * @param array $postArray OPTIONAL array of parameters to be POST-ed as the normal application/x-www-form-urlencoded string
+     * @param mixed $customHeaders string|false default = false;
+     *                             string of HTTP headers delimited by pipe without trailing spaces
+     * @param array $postArray OPTIONAL parameters to be POST-ed as the normal application/x-www-form-urlencoded string
      * @param string $customRequest OPTIONAL fills in CURLOPT_CUSTOMREQUEST
      * @return array ('message_body', 'HTTP_CODE', 'CONTENT_TYPE', 'HEADER_FIELDS', ['REDIRECT_URL',])
      */
-    public function getData($url, $useragent = 'PHP/cURL', $timeout = 5, $customHeaders = false, array $postArray = array(), $customRequest = null)
+    public function getData(
+        $url,
+        $useragent = 'PHP/cURL',
+        $timeout = 5,
+        $customHeaders = false,
+        array $postArray = array(),
+        $customRequest = null
+    )
     {
-        $this->logger->log(5, "backyard getData({$url},{$useragent},{$timeout},{$customHeaders}," . (empty($postArray) ? '[]' : (count($postArray) . ' fields')) . ",{$customRequest});", array(16));
+        $this->logger->log(
+            5,
+            "backyard getData({$url},{$useragent},{$timeout},{$customHeaders},"
+            . (empty($postArray) ? '[]' : (count($postArray) . ' fields')) . ",{$customRequest});",
+            array(16)
+        );
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_USERAGENT, $useragent);
-        if (!is_null($customRequest) && is_string($customRequest) && in_array($customRequest, array('GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH'))) {
+        if (!is_null($customRequest) && is_string($customRequest) &&
+            in_array(
+                $customRequest,
+                array('GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH')
+            )
+        ) {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $customRequest);
         }
         if ($customHeaders) {
             if (!is_string($customHeaders)) {
                 $this->logger->log(2, 'customHeaders string expected, got ' . gettype($customHeaders));
             }
-            $customArray = explode('|', $customHeaders); //$customHeaders must be delimited by pipe without trailing spaces (comma is bad for accept header)
+            //$customHeaders must be delimited by pipe without trailing spaces (comma is bad for accept header)
+            $customArray = explode('|', $customHeaders);
             $tempOptSer = curl_setopt($ch, CURLOPT_HTTPHEADER, $customArray);
             if (!$tempOptSer) {
                 $this->logger->log(2, "Custom headers {$customHeaders} FAILED to be set", array(16));
@@ -197,11 +222,14 @@ class BackyardHttp
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // accepts also private SSL certificates //@todo it could be possible to try without that option and if it fails, it may try with this option and inform about it
+        //@todo try without that option and if it fails, it may try with this option and inform about it
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // accepts also private SSL certificates
 
         $response = curl_exec($ch);
-        //@TODO - if response is 301 or 302, then dump header into output and make it clickable or maybe download the next step automatically - it is necessary however to stop after 5 redirects
-        /* how to DEBUG some wrong content that force redirection - such as http://www.alfa.gods.cz/lib/emulator.php?url=http%3A%2F%2Fpic4mms.com%2F&original=1 * /
+        //@TODO - if response is 301 or 302, then dump header into output and make it clickable
+        // or maybe download the next step automatically - it is necessary however to stop after 5 redirects
+        /* how to DEBUG some wrong content that force redirection -
+         * such as http://www.alfa.gods.cz/lib/emulator.php?url=http%3A%2F%2Fpic4mms.com%2F&original=1 * /
           header("Content-type: text/plain");//debug
           print_r(str_replace("i", "E", $data['MARKUP']));// debug
           exit;
@@ -209,7 +237,8 @@ class BackyardHttp
 
         //    if($response === false){
         //        $curlError = curl_error($ch);// to prevent some previous curl_error($ch) be reported
-        //        my_error_log("Curl error: {$curlError}", 2); // @todo if curl_exec($ch) === false then some operation on $response below are meaningless
+        //        // @todo if curl_exec($ch) === false then some operation on $response below are meaningless
+        //        my_error_log("Curl error: {$curlError}", 2);
         //    }
         // http://stackoverflow.com/a/9183272
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
@@ -217,7 +246,8 @@ class BackyardHttp
         if ($response) {
             $data['message_body'] = substr($response, $header_size);
         }
-        if (!$response || (!$data['message_body'] && !in_array($data['HTTP_CODE'], array(301, 302)))) {//redirects may have empty body
+        //redirects may have empty body
+        if (!$response || (!$data['message_body'] && !in_array($data['HTTP_CODE'], array(301, 302)))) {
             $this->logger->log(2, "Curl error: " . curl_error($ch) . " on {$url} with HTTP_CODE={$data['HTTP_CODE']}");
             if (count($data) > 1) {
                 $this->logger->log(2, 'data:' . print_r($data, true));
@@ -274,7 +304,8 @@ class BackyardHttp
      * 120215, function GetHTTPstatusCode ($URL_STRING){ .. from r.godsapps.eu/index.php
      * 120215, function get_data ($URL_STRING, $User-agent){ .. from r.godsapps.eu/magic-link.php
      * //120427, if the result is not number, maybe the server doesn't understand HEAD, let's try GET
-     * 120427,   if($address != "81.31.47.101"){//gethostbyname returns this IP address on www.alfa.gods.cz if domain name does not exist  //@TODO - zautoamtizovat správnou IP adresu
+     * 120427,   if($address != "81.31.47.101"){//gethostbyname returns this IP address on www.alfa.gods.cz
+     * if domain name does not exist  //@TODO - zautoamtizovat správnou IP adresu
      * 140714, moved to backyard_http
      *
      *
@@ -304,11 +335,11 @@ class BackyardHttp
             . "\r\n";
 
         $this->logger->log(5, "IPv4 is " . $address = gethostbyname($host), array(16)); //set & log
-        if (in_array($address, $localDNSserver)) {//gethostbyname returns this IP address on www.alfa.gods.cz if domain name does not exist
+        //gethostbyname returns this IP address on www.alfa.gods.cz if domain name does not exist
+        if (in_array($address, $localDNSserver)) {
             return 'DNS_error';
         }
 
-        $socketLastErrorString = ''; // init
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         $socketResult = socket_connect($socket, $address, $port);
         if ($socketResult) {
@@ -327,7 +358,10 @@ class BackyardHttp
                 $response = explode(' ', socket_read($socket, 1024));
                 $this->logger->log(4, "GET HTTP response: " . print_r($response, true), array(16)); //debug
                 if (!is_numeric($response[1])) {
-                    $this->logger->log(3, "REQUEST = $request RETURNED RESPONSE = {$response[1]} INSTEAD OF HTTP status");
+                    $this->logger->log(
+                        3,
+                        "REQUEST = $request RETURNED RESPONSE = {$response[1]} INSTEAD OF HTTP status"
+                    );
                 }
             } elseif ($response[1] > 300 && $response[1] < 400) {
                 $tempPosition = strpos($socketRead, "Location:");
@@ -335,15 +369,24 @@ class BackyardHttp
                 $tempResponse = explode(PHP_EOL, $tempLocation);
                 $response[1] .= " follow to " . trim($tempResponse[0]);
             }
-        } else {
-            $socketLastError = socket_last_error($socket);
-            $socketLastErrorString = trim(iconv(mb_detect_encoding(socket_strerror($socketLastError), mb_detect_order(), true), "UTF-8", socket_strerror($socketLastError))); //http://stackoverflow.com/questions/7979567/php-convert-any-string-to-utf-8-without-knowing-the-original-character-set-or
-            $this->logger->log(3, "socket_connect to $host $path failed with {$socketLastError}: {$socketLastErrorString}"); // debug
+            socket_close($socket);
+            $this->logger->log(
+                5,
+                "result=" . $result = (isset($response[1]) ? ($response[1]) : ('socketLastErrorString')), // set & log
+                array(16)
+            );
+            return $result;
         }
-
-        socket_close($socket);
-        $this->logger->log(5, "result=" . $result = (isset($response[1]) ? ($response[1]) : ($socketLastErrorString)), array(16)); // set & log
-        return $result;
+        $socketLastError = socket_last_error($socket);
+        // http://stackoverflow.com/questions/7979567/
+        // php-convert-any-string-to-utf-8-without-knowing-the-original-character-set-or
+        $socketLastErrorString = trim(iconv(mb_detect_encoding(
+                    socket_strerror($socketLastError),
+                    mb_detect_order(),
+                    true
+                ), "UTF-8", socket_strerror($socketLastError)));
+        $this->logger->log(3, "socket_connect to $host $path failed with {$socketLastError}: {$socketLastErrorString}");
+        return 'SOCKET_error';
     }
 
     /**

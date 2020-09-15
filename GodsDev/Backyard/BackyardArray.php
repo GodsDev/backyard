@@ -26,7 +26,7 @@ class BackyardArray
     }
     /**
      * Note http://php.net/manual/en/function.array-key-exists.php#107786
-     * If you want to take the performance advantage of isset() while keeping the null element correctly detected, use this:
+     * If you want to take the performance advantage of isset() while keeping the null element correctly detected, use:
 
       if (isset(..) || array_key_exists(...))
       {
@@ -66,7 +66,7 @@ class BackyardArray
      *
      * @param array $myArray at least two-dimensional
      * @param string $columnName
-     * @param bool $columnAlwaysExpected default false; if true function does log the missing column in a row as an error
+     * @param bool $columnAlwaysExpected default false; true => function logs the missing column in a row as an error
      * @return array
      */
     public function getOneColumnFromArray(array $myArray, $columnName, $columnAlwaysExpected = false)
@@ -146,11 +146,16 @@ class BackyardArray
      * @param array $searchedArray
      * @param string $columnName
      * @param bool $allExactMatches - default false; if true function returns array with all exact matches
-     * @param bool $columnAlwaysExpected - default true; if false function does not log the missing column in a row as an error
+     * @param bool $columnAlwaysExpected - default true; false: the missing column in a row isn't logged as an error
      * @return mixed (array if found, false otherwise)
      */
-    public function arrayVlookup($searchedValue, array $searchedArray, $columnName, $allExactMatches = false, $columnAlwaysExpected = true)
-    {
+    public function arrayVlookup(
+        $searchedValue,
+        array $searchedArray,
+        $columnName,
+        $allExactMatches = false,
+        $columnAlwaysExpected = true
+    ) {
         if (!is_array($searchedArray)) {
             $this->logger->error("ArrayVlookup: second parameter is not an array");
             return false;

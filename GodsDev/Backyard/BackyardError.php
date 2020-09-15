@@ -9,6 +9,7 @@ use Psr\Log\LoggerInterface;
 class BackyardError extends AbstractLogger implements LoggerInterface
 {
 
+// phpcs:disable Generic.Files.LineLength
     protected $BackyardConf = array();
 
     //private $PageTimestamp = null;
@@ -294,4 +295,5 @@ class BackyardError extends AbstractLogger implements LoggerInterface
         }
         die("Error {$errorNumber}" . (($this->BackyardConf['die_graciously_verbose']) ? " - {$errorString}" : ""));
     }
+    // phpcs:enable
 }
