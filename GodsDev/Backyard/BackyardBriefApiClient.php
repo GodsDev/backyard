@@ -123,7 +123,7 @@ class BackyardBriefApiClient
      * @param string $message
      * @param string $filePrefix
      * @param string $communicationId
-     * @return bool <p>Returns <b><code>TRUE</code></b> on logging or <b><code>FALSE</code></b> on not logging.</p>
+     * @return bool Returns <b><code>TRUE</code></b> on logging or <b><code>FALSE</code></b> on not logging.
      */
     private function logCommunication($message, $filePrefix, $communicationId)
     {

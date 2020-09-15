@@ -1,4 +1,4 @@
 parameters:
     level: 5
     excludes_analyse:
-      - src/*.php
+      - ../../src/*.php

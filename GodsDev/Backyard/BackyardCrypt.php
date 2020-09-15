@@ -32,7 +32,7 @@ class BackyardCrypt
     public function randomId($randomIdLength = 10)
     {
         //generate a random id encrypt it and store it in $rndId
-        $rndId = crypt(uniqid(rand(), 1), uniqid(rand(), 1));
+        $rndId = crypt(uniqid((string) rand(), true), uniqid((string) rand(), true));
 
         //to remove any slashes that might have come
         $rndId = strip_tags(stripslashes($rndId));

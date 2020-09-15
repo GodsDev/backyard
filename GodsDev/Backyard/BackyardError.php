@@ -47,7 +47,7 @@ class BackyardError extends AbstractLogger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     * @return bool
      */
     public function emergency($message, array $context = array())
     {
@@ -62,7 +62,7 @@ class BackyardError extends AbstractLogger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     * @return bool
      */
     public function alert($message, array $context = array())
     {
@@ -76,7 +76,7 @@ class BackyardError extends AbstractLogger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     * @return bool
      */
     public function critical($message, array $context = array())
     {
@@ -89,7 +89,7 @@ class BackyardError extends AbstractLogger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     * @return bool
      */
     public function error($message, array $context = array())
     {
@@ -104,7 +104,7 @@ class BackyardError extends AbstractLogger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     * @return bool
      */
     public function warning($message, array $context = array())
     {
@@ -116,7 +116,7 @@ class BackyardError extends AbstractLogger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     * @return bool
      */
     public function notice($message, array $context = array())
     {
@@ -130,7 +130,7 @@ class BackyardError extends AbstractLogger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     * @return bool
      */
     public function info($message, array $context = array())
     {
@@ -142,7 +142,7 @@ class BackyardError extends AbstractLogger implements LoggerInterface
      *
      * @param string $message
      * @param array $context
-     * @return null
+     * @return bool
      */
     public function debug($message, array $context = array())
     {
@@ -276,10 +276,10 @@ class BackyardError extends AbstractLogger implements LoggerInterface
      * @param string $feedbackButtonMarkup
      * @return void (die)
      */
-    public function dieGraciously($errorNumber, $errorString, $feedbackButtonMarkup = false)
+    public function dieGraciously($errorNumber, $errorString, $feedbackButtonMarkup = '')
     {
         $this->log(1, "Die with error {$errorNumber} - {$errorString}");
-        if ($feedbackButtonMarkup) {
+        if ((bool) $feedbackButtonMarkup) {
             echo(
             "<html><body>"
             . str_replace(

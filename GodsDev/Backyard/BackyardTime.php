@@ -56,9 +56,7 @@ class BackyardTime
      */
     public function pageGeneratedIn($langStringPageGeneratedIn = '%s')
     {
-        $str = str_replace('%s', round($this->getmicrotime() - $this->PageTimestamp, 4), $langStringPageGeneratedIn);
-        //$this->BackyardError->log(6, round($this->getmicrotime() - $this->PageTimestamp, 4), array(6));
-        return $str;
+        return str_replace('%s', (string) round($this->getmicrotime() - $this->PageTimestamp, 4), $langStringPageGeneratedIn);
     }
 }
 

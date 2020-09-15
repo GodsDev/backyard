@@ -156,7 +156,7 @@ class BackyardHttp
      * @param string $url
      * @param string $useragent default = 'PHP/cURL'
      * @param int $timeout [seconds] default =5
-     * @param string|false $customHeaders default = false; string of HTTP headers delimited by pipe without trailing spaces
+     * @param mixed $customHeaders string|false default = false; string of HTTP headers delimited by pipe without trailing spaces
      * @param array $postArray OPTIONAL array of parameters to be POST-ed as the normal application/x-www-form-urlencoded string
      * @param string $customRequest OPTIONAL fills in CURLOPT_CUSTOMREQUEST
      * @return array ('message_body', 'HTTP_CODE', 'CONTENT_TYPE', 'HEADER_FIELDS', ['REDIRECT_URL',])
@@ -308,6 +308,7 @@ class BackyardHttp
             return 'DNS_error';
         }
 
+        $socketLastErrorString = ''; // init
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         $socketResult = socket_connect($socket, $address, $port);
         if ($socketResult) {
@@ -345,6 +346,13 @@ class BackyardHttp
         return $result;
     }
 
+    /**
+     * Returns HTTP status code for URL and UserAgent
+     *
+     * @param string $URL_STRING
+     * @param string $userAgent
+     * @return int
+     */
     public function getHTTPstatusCodeByUA($URL_STRING, $userAgent = "GetStatusCode/1.1")
     {
         $url = parse_url($URL_STRING);
@@ -358,11 +366,8 @@ class BackyardHttp
         }
 
         $host = $url['host'];
-        $port = $url['port'];
+        $port = (isset($url['port']) && $url['port']) ? $url['port'] : 80;
         $path = $url['path'];
-        if (!$port) {
-            $port = 80;
-        }
 
         $request = "HEAD $path HTTP/1.1\r\n"
             . "Host: $host\r\n"
@@ -374,14 +379,12 @@ class BackyardHttp
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         if (socket_connect($socket, $address, $port)) {
             socket_write($socket, $request, strlen($request));
-
             $response = explode(' ', socket_read($socket, 1024));
             $this->logger->log(4, "HTTP response: " . print_r($response, true), array(16)); // debug
-        } else {
-            $this->logger->log(3, "socket_connect to $host $path failed", array(13)); // debug
+            socket_close($socket);
+            return (int) $response[1];
         }
-
-        socket_close($socket);
-        return $response[1];
+        $this->logger->log(3, "socket_connect to $host $path failed", array(13)); // debug
+        return 0;
     }
 }
