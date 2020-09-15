@@ -92,7 +92,7 @@ class BackyardMysqli extends \mysqli
      * 120914, inspired by http://www.blrf.net/blog/223/code/php/extending-mysqli-class-with-example/
      *
      * @param string $sql SQL to execute
-     * @return \mysqli_result Object|false
+     * @return mixed \mysqli_result|false
      */
     public function query($sql, $ERROR_LOG_OUTPUT = true)
     {
