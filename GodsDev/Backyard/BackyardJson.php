@@ -14,7 +14,7 @@ class BackyardJson
      *
      * @var LoggerInterface
      */
-    protected $BackyardError;
+    protected $logger;
 
     /**
      *
@@ -24,12 +24,12 @@ class BackyardJson
 
     /**
      *
-     * @param LoggerInterface $backyardError
+     * @param LoggerInterface $logger
      * @param BackyardHttp $backyardHttp
      */
-    public function __construct(LoggerInterface $backyardError, BackyardHttp $backyardHttp)
+    public function __construct(LoggerInterface $logger, BackyardHttp $backyardHttp)
     {
-        $this->BackyardError = $backyardError;
+        $this->logger = $logger;
         $this->BackyardHttp = $backyardHttp;
     }
 
@@ -45,11 +45,11 @@ class BackyardJson
     {
         $jsonOutput = json_encode(json_decode($jsonInput)); //optimalizace pro výstup
         if ($jsonOutput == 'null') {
-            $this->BackyardError->log(1, "ERROR IN JSON: {$jsonInput}", array(16));
+            $this->logger->log(1, "ERROR IN JSON: {$jsonInput}", array(16));
             $jsonOutput = '{"status": "500", "error": "Internal error"}'; //error output
         } else {
-            $this->BackyardError->log($logLevel, "JSON input: {$jsonInput}", array(16));
-            $this->BackyardError->log($logLevel, "JSON output: {$jsonOutput}", array(16));
+            $this->logger->log($logLevel, "JSON input: {$jsonInput}", array(16));
+            $this->logger->log($logLevel, "JSON output: {$jsonOutput}", array(16));
         }
         return $jsonOutput;
     }
@@ -102,7 +102,7 @@ class BackyardJson
             $json = json_decode($json, $assoc);
         }
         if (is_null($json)) {
-            $this->BackyardError->log(5, "Invalid JSON: " . $json2decode);
+            $this->logger->log(5, "Invalid JSON: " . $json2decode);
             return false; //invalid JSON
         }
         return $json;
@@ -128,12 +128,12 @@ class BackyardJson
         $result = $this->BackyardHttp->getData($url, $useragent, $timeout, $customHeaders, $postArray);
         $json = $result['message_body'];
         if (!$json) {
-            $this->BackyardError->log(2, "No content on {$url}");
+            $this->logger->log(2, "No content on {$url}");
             return false;
         }
         $jsonArray = $this->jsonCleanDecode($json, true);
         if (!$jsonArray) {
-            $this->BackyardError->log(2, "Trouble with decoding JSON from {$url}");
+            $this->logger->log(2, "Trouble with decoding JSON from {$url}");
             return false;
         }
         return $jsonArray;

@@ -18,14 +18,14 @@ class BackyardGeo
      *
      * @var \Psr\Log\LoggerInterface;
      */
-    protected $BackyardError = null;
+    protected $logger = null;
 
     /**
      *
-     * @param LoggerInterface $BackyardError
+     * @param LoggerInterface $logger
      * @param array $backyardConfConstruct
      */
-    public function __construct(LoggerInterface $BackyardError, array $backyardConfConstruct = array())
+    public function __construct(LoggerInterface $logger, array $backyardConfConstruct = array())
     {
         //@todo do not use $this->BackyardConf but set the class properties right here accordingly;
         //@todo also provide means to set the values otherwise later
@@ -42,7 +42,7 @@ class BackyardGeo
             $backyardConfConstruct
         );
 
-        $this->BackyardError = $BackyardError;
+        $this->logger = $logger;
     }
     /**     * ***************************************************************************
      * GEOLOCATION FUNCTIONS
@@ -113,7 +113,7 @@ class BackyardGeo
     public function getRoughDistance($clientLng, $clientLat, $poiLng, $poiLat)
     {
         $result = abs($clientLng - $poiLng) + abs($clientLat - $poiLat);
-        $this->BackyardError->log(
+        $this->logger->log(
             5,
             "client({$clientLng}, {$clientLat}) poi({$poiLng}, {$poiLat}) roughDistance = {$result}"
         );
@@ -135,7 +135,7 @@ class BackyardGeo
      */
     public function getClosestPOI($lat, $long, $poiCategory, BackyardMysqli $poiConnection)
     {
-        $this->BackyardError->log(4, "Looking for closest POI: lat={$lat} long={$long}");
+        $this->logger->log(4, "Looking for closest POI: lat={$lat} long={$long}");
         $uom = 'm';
         //current
         $startPoint = array(
@@ -167,7 +167,7 @@ class BackyardGeo
             $roughDistance[$key] = $listOfPOINearbyPreprocessed[$key]['roughDistance'];
         }
 
-        $this->BackyardError->log(
+        $this->logger->log(
             4,
             'Count of rows listOfPOINearbyPreprocessed: ' . count($listOfPOINearbyPreprocessed),
             array(11)
@@ -195,7 +195,7 @@ class BackyardGeo
         if (!$listOfPOINearbyProcessed) {
             return false;
         }
-        $this->BackyardError->log(
+        $this->logger->log(
             4,
             'Count of rows listOfPOINearbyProcessed: ' . count($listOfPOINearbyProcessed),
             array(11)
@@ -235,9 +235,9 @@ class BackyardGeo
             . " WHERE `category` IN ( " . $poiCategorySecured . " )";
         $listOfPOINearby = $poiConnection->queryArray($query);
         if (!$listOfPOINearby) {
-            $this->BackyardError->log(2, 'No result for query ' . $query, array(11));
+            $this->logger->log(2, 'No result for query ' . $query, array(11));
         } else {
-            $this->BackyardError->log(4, 'Count of rows listOfPOINearby: ' . count($listOfPOINearby), array(11));
+            $this->logger->log(4, 'Count of rows listOfPOINearby: ' . count($listOfPOINearby), array(11));
         }
         return $listOfPOINearby;
     }
