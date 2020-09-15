@@ -14,13 +14,13 @@ class BackyardJson
      *
      * @var LoggerInterface
      */
-    protected $BackyardError = null;
+    protected $BackyardError;
 
     /**
      *
      * @var BackyardHttp
      */
-    protected $BackyardHttp = null;
+    protected $BackyardHttp;
 
     /**
      *

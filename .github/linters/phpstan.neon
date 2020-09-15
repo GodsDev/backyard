@@ -2,6 +2,8 @@ parameters:
     level: 5
     excludes_analyse:
       - ../../src/*.php
+    scanDirectories:
+      - ../../GodsDev/Backyard
     ignoreErrors:
       -
         message: '#Property GodsDev\\Backyard\\BackyardJson::\$BackyardError has unknown class Psr\\Log\\LoggerInterface as its type.#'
