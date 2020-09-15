@@ -144,11 +144,13 @@ class BackyardHttpTest extends \PHPUnit_Framework_TestCase
         //$this->assertEquals($expected, $result);
 //        error_log(preg_replace('/\s+/', '', $result['message_body']));
         $this->assertEquals($expected['HTTP_CODE'], $result['HTTP_CODE']);
-        $this->assertEquals(preg_replace('/\s+/', '', $expected['message_body']), preg_replace(
+        $this->assertEquals(
+            preg_replace('/\s+/', '', $expected['message_body']), preg_replace(
                 '/\s+/',
                 '',
                 $result['message_body']
-        ));
+            )
+        );
         $this->assertEquals($expected['REDIRECT_URL'], $result['REDIRECT_URL']);
         $this->assertEquals($expected['CONTENT_TYPE'], $result['CONTENT_TYPE']);
     }

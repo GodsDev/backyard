@@ -72,7 +72,10 @@ class BackyardArrayTest extends \PHPUnit_Framework_TestCase
         $columnAlwaysExpected = false;
         $expected = array("al" => "2", "ham" => "20", "a" => "2000");
 
-        $this->assertEquals($expected, $this->object->getOneColumnFromArray($myArray, $columnName, $columnAlwaysExpected));
+        $this->assertEquals(
+            $expected,
+            $this->object->getOneColumnFromArray($myArray, $columnName, $columnAlwaysExpected)
+        );
     }
 
     public function testGetOneColumnFromArrayMissingRowLogged()

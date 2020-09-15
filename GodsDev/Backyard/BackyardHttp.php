@@ -175,8 +175,7 @@ class BackyardHttp
         $customHeaders = false,
         array $postArray = array(),
         $customRequest = null
-    )
-    {
+    ) {
         $this->logger->log(
             5,
             "backyard getData({$url},{$useragent},{$timeout},{$customHeaders},"
@@ -186,7 +185,8 @@ class BackyardHttp
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_USERAGENT, $useragent);
-        if (!is_null($customRequest) && is_string($customRequest) &&
+        if (
+            !is_null($customRequest) && is_string($customRequest) &&
             in_array(
                 $customRequest,
                 array('GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'CONNECT', 'OPTIONS', 'TRACE', 'PATCH')
@@ -380,11 +380,17 @@ class BackyardHttp
         $socketLastError = socket_last_error($socket);
         // http://stackoverflow.com/questions/7979567/
         // php-convert-any-string-to-utf-8-without-knowing-the-original-character-set-or
-        $socketLastErrorString = trim(iconv(mb_detect_encoding(
+        $socketLastErrorString = trim(
+            iconv(
+                mb_detect_encoding(
                     socket_strerror($socketLastError),
                     mb_detect_order(),
                     true
-                ), "UTF-8", socket_strerror($socketLastError)));
+                ),
+                "UTF-8",
+                socket_strerror($socketLastError)
+            )
+        );
         $this->logger->log(3, "socket_connect to $host $path failed with {$socketLastError}: {$socketLastErrorString}");
         return 'SOCKET_error';
     }
