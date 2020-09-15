@@ -3,7 +3,6 @@
 namespace GodsDev\Backyard;
 
 use Psr\Log\LoggerInterface;
-use GodsDev\Backyard\BackyardHttp;
 
 /**
  * JSON FUNCTIONS
@@ -13,13 +12,13 @@ class BackyardJson
 
     /**
      *
-     * @var \Psr\Log\LoggerInterface
+     * @var LoggerInterface
      */
     protected $BackyardError = null;
 
     /**
      *
-     * @var \GodsDev\Backyard\BackyardHttp
+     * @var BackyardHttp
      */
     protected $BackyardHttp = null;
 

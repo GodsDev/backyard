@@ -131,7 +131,7 @@ class BackyardGeo
      * @param mixed $poiCategory (integer|string with comma separated integers)
      *                           according to table set in $backyardConf['geo_poi_list_table_name']
      * @param BackyardMysqli $poiConnection
-     * @return array|boolean false if empty
+     * @return array|bool false if empty
      */
     public function getClosestPOI($lat, $long, $poiCategory, BackyardMysqli $poiConnection)
     {
@@ -217,17 +217,15 @@ class BackyardGeo
      * Returns the list of POI from the requested category(-ies)
      * @todo - limit by lat/lng not to return all POIs
      *
-     * @global array $backyardConf
      * @param mixed $poiCategory (may be integer or string with comma separated integers)
      * @param BackyardMysqli $poiConnection
-     * @return mixed (array or false)
+     * @return mixed array|false
      *
      * bacykard_getListOfPOINearby ($poiCategory, $lat , $long) might be created to preselect from the database
      * only those that do not overpass the perpendicular backyardGeo['rough_distance_limit']
      */
     public function getListOfPOI($poiCategory, BackyardMysqli $poiConnection)
     {
-        //global $backyardConf;
         if (is_int($poiCategory)) {
             $poiCategorySecured = $poiCategory;
         } else {

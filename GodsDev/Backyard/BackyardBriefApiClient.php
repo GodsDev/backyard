@@ -153,8 +153,7 @@ class BackyardBriefApiClient
         $result = json_decode($response, true);
         if (!$result && !is_null($this->logger)) {
             $this->logger->error("json decode failed for " . substr($response, 0, 100)
-                . " that resulted from " . substr($json, 0, 100)
-            );
+                . " that resulted from " . substr($json, 0, 100));
         }
         return $result;
     }

@@ -70,6 +70,9 @@ class BackyardTimeTest extends \PHPUnit_Framework_TestCase
         $langStringPageGeneratedIn = "Page Generated in %s";
         $expected = 'Page Generated in 0';
 
-        $this->assertEquals($expected, substr($this->object->pageGeneratedIn($langStringPageGeneratedIn), 0, strlen($expected)));
+        $this->assertEquals(
+            $expected,
+            substr($this->object->pageGeneratedIn($langStringPageGeneratedIn), 0, strlen($expected))
+        );
     }
 }

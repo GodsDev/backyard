@@ -25,11 +25,11 @@ class BackyardMysqli extends \mysqli
      * @param string $user username
      * @param string $pass password
      * @param string $db database name
-     * @param BackyardError $BackyardError PSR-3 logger
+     * @param \GodsDev\Backyard\BackyardError $BackyardError PSR-3 logger
      *
      * @todo add IPv6 , e.g ::1 as $host_port
      */
-    public function __construct($host_port, $user, $pass, $db, BackyardError $BackyardError)
+    public function __construct($host_port, $user, $pass, $db, \GodsDev\Backyard\BackyardError $BackyardError)
     {
         //error_log("debug: " . __CLASS__ . ' ' . __METHOD__);
         $this->BackyardError = $BackyardError;
