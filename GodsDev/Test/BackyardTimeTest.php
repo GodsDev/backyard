@@ -22,7 +22,7 @@ class BackyardTimeTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new BackyardTime(new BackyardError());
+        $this->object = new BackyardTime();
     }
 
     /**
@@ -51,7 +51,7 @@ class BackyardTimeTest extends \PHPUnit_Framework_TestCase
     {
         $expected = '0.0';
 
-        $this->assertEquals($expected, substr($this->object->getRunningTime(), 0, 3));
+        $this->assertEquals($expected, substr((string) $this->object->getRunningTime(), 0, 3));
     }
 
     /**
