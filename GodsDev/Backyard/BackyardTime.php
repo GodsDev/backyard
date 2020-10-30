@@ -6,11 +6,11 @@ class BackyardTime
 {
 
     /** @var float|null */
-    private $PageTimestamp = null;
+    private $pageTimestamp = null;
 
     public function __construct()
     {
-        $this->PageTimestamp = $this->getmicrotime(); // initialisation
+        $this->pageTimestamp = $this->getmicrotime(); // initialisation
     }
 
     /**
@@ -25,9 +25,8 @@ class BackyardTime
         if (version_compare((string) phpversion(), '5.0.0') == -1) {
             list($usec, $sec) = explode(' ', microtime());
             return ((float) $usec + (float) $sec);
-        } else {
-            return(microtime(true));
         }
+        return microtime(true);
     }
 
     /**
@@ -36,7 +35,7 @@ class BackyardTime
      */
     public function getPageTimestamp()
     {
-        return $this->PageTimestamp;
+        return $this->pageTimestamp;
     }
 
     /**
@@ -46,7 +45,7 @@ class BackyardTime
      */
     public function getRunningTime()
     {
-        return round($this->getmicrotime() - $this->PageTimestamp, 4);
+        return round($this->getmicrotime() - $this->pageTimestamp, 4);
     }
 
     /**
@@ -59,7 +58,7 @@ class BackyardTime
     {
         return str_replace(
             '%s',
-            (string) round($this->getmicrotime() - $this->PageTimestamp, 4),
+            (string) round($this->getmicrotime() - $this->pageTimestamp, 4),
             $langStringPageGeneratedIn
         );
     }

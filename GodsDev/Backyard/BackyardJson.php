@@ -20,7 +20,7 @@ class BackyardJson
      *
      * @var BackyardHttp
      */
-    protected $BackyardHttp;
+    protected $backyardHttp;
 
     /**
      *
@@ -30,7 +30,7 @@ class BackyardJson
     public function __construct(LoggerInterface $logger, BackyardHttp $backyardHttp)
     {
         $this->logger = $logger;
-        $this->BackyardHttp = $backyardHttp;
+        $this->backyardHttp = $backyardHttp;
     }
 
     /**
@@ -43,14 +43,13 @@ class BackyardJson
      */
     public function minifyJSON($jsonInput, $logLevel = 5)
     {
-        $jsonOutput = json_encode(json_decode($jsonInput)); //optimalizace pro výstup
-        if ($jsonOutput == 'null') {
+        $jsonOutput = json_encode(json_decode($jsonInput)); // optimalizace pro výstup
+        if ($jsonOutput == 'null' || $jsonOutput === false || !is_string($jsonOutput)) {
             $this->logger->log(1, "ERROR IN JSON: {$jsonInput}", array(16));
-            $jsonOutput = '{"status": "500", "error": "Internal error"}'; //error output
-        } else {
-            $this->logger->log($logLevel, "JSON input: {$jsonInput}", array(16));
-            $this->logger->log($logLevel, "JSON output: {$jsonOutput}", array(16));
+            return '{"status": "500", "error": "Internal error"}'; //error output
         }
+        $this->logger->log($logLevel, "JSON input: {$jsonInput}", array(16));
+        $this->logger->log($logLevel, "JSON output: {$jsonOutput}", array(16));
         return $jsonOutput;
     }
 
@@ -119,7 +118,7 @@ class BackyardJson
      * @param string $useragent OPTIONAL
      * @param int $timeout OPTIONAL
      * @param bool $customHeaders OPTIONAL
-     * @param array $postArray OPTIONAL
+     * @param array<mixed> $postArray OPTIONAL
      * @return array|bool array if cURL($url) returns JSON else false
      */
     public function getJsonAsArray(
@@ -129,7 +128,7 @@ class BackyardJson
         $customHeaders = false,
         array $postArray = array()
     ) {
-        $result = $this->BackyardHttp->getData($url, $useragent, $timeout, $customHeaders, $postArray);
+        $result = $this->backyardHttp->getData($url, $useragent, $timeout, $customHeaders, $postArray);
         $json = $result['message_body'];
         if (!$json) {
             $this->logger->log(2, "No content on {$url}");
