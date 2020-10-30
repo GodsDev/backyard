@@ -169,8 +169,7 @@ class BackyardHttp
      * @param array<mixed> $postArray OPTIONAL parameters to be POST-ed as the normal
      *     application/x-www-form-urlencoded string
      * @param string $customRequest OPTIONAL fills in CURLOPT_CUSTOMREQUEST
-     * @return array<array, int, string>
-     *     ['message_body', 'HTTP_CODE', 'CONTENT_TYPE', 'HEADER_FIELDS', ['REDIRECT_URL',]]
+     * @return array<string, mixed> ['message_body', 'HTTP_CODE', 'CONTENT_TYPE', 'HEADER_FIELDS', ['REDIRECT_URL',]]
      * @throws \Exception if $customHeaders are neither false nor string
      */
     public function getData(
@@ -330,11 +329,9 @@ class BackyardHttp
             $this->logger->log(self::LOG_LEVEL, "{$URL_STRING} parsing failed", array(16));
             return 0;
         }
-        foreach (array('scheme', 'host', 'path') as $component) {
-            if (!array_key_exists($component, $url)) {
-                $this->logger->log(self::LOG_LEVEL, "No $component present", array(16));
-                return 0;
-            }
+        if (!array_key_exists('scheme', $url) || !array_key_exists('host', $url) || !array_key_exists('path', $url)) {
+            $this->logger->log(self::LOG_LEVEL, "Scheme, host or path missing in {$URL_STRING}", array(16));
+            return 0;
         }
 
         if ($url['scheme'] != 'http') {
@@ -456,11 +453,9 @@ class BackyardHttp
             $this->logger->log(self::LOG_LEVEL, "{$URL_STRING} parsing failed", array(16));
             return 0;
         }
-        foreach (array('scheme', 'host', 'path') as $component) {
-            if (!array_key_exists($component, $url)) {
-                $this->logger->log(self::LOG_LEVEL, "No $component present", array(16));
-                return 0;
-            }
+        if (!array_key_exists('scheme', $url) || !array_key_exists('host', $url) || !array_key_exists('path', $url)) {
+            $this->logger->log(self::LOG_LEVEL, "Scheme, host or path missing in {$URL_STRING}", array(16));
+            return 0;
         }
         if ($url['scheme'] != 'http') {
             $this->logger->log(
