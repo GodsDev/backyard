@@ -165,11 +165,11 @@ class BackyardHttp
      * @param string $useragent default = 'PHP/cURL'
      * @param int $timeout [seconds] default =5
      * @param string|false $customHeaders default = false;
-     *                                    string of HTTP headers delimited by pipe without trailing spaces
+     *     string of HTTP headers delimited by pipe without trailing spaces
      * @param array<mixed> $postArray OPTIONAL parameters to be POST-ed as the normal
      *     application/x-www-form-urlencoded string
      * @param string $customRequest OPTIONAL fills in CURLOPT_CUSTOMREQUEST
-     * @return array<array|string> ('message_body', 'HTTP_CODE', 'CONTENT_TYPE', 'HEADER_FIELDS', ['REDIRECT_URL',])
+     * @return array<array, string> ('message_body', 'HTTP_CODE', 'CONTENT_TYPE', 'HEADER_FIELDS', ['REDIRECT_URL',])
      * @throws \Exception If $customHeaders are neither false nor string
      */
     public function getData(
@@ -252,7 +252,11 @@ class BackyardHttp
             $data['message_body'] = substr($response, $header_size);
         }
         //redirects may have empty body
-        if (!$response || (!$data['message_body'] && !in_array($data['HTTP_CODE'], array(301, 302)))) {
+        if (
+            !$response ||
+            ((!array_key_exists('message_body', $data) || !$data['message_body']) //
+            && !in_array($data['HTTP_CODE'], array(301, 302)))
+        ) {
             $this->logger->log(2, "Curl error: " . curl_error($ch) . " on {$url} with HTTP_CODE={$data['HTTP_CODE']}");
             if (count($data) > 1) {
                 $this->logger->log(2, 'data:' . print_r($data, true));
@@ -268,7 +272,7 @@ class BackyardHttp
             (string) preg_replace(
                 '/\x0D\x0A[\x09\x20]+/',
                 ' ',
-                substr($response, 0, $header_size) // message header
+                substr((string) $response, 0, $header_size) // message header
             )
         );
         $retVal = array();
@@ -321,10 +325,17 @@ class BackyardHttp
     {
         $localDNSserver = array('81.31.47.101'); // @TODO - make configurable!
         $url = parse_url($URL_STRING);
-        if (!isset($url['scheme'])) {
-            $this->logger->log(self::LOG_LEVEL, "No scheme present", array(16));
+        if (!url) {
+            $this->logger->log(self::LOG_LEVEL, "{$URL_STRING} parsing failed", array(16));
             return 0;
         }
+        foreach (array('scheme', 'host', 'path') as $component) {
+            if (!array_key_exists($component, $url)) {
+                $this->logger->log(self::LOG_LEVEL, "No $component present", array(16));
+                return 0;
+            }
+        }
+
         if ($url['scheme'] != 'http') {
             $this->logger->log(
                 self::LOG_LEVEL,
@@ -352,7 +363,7 @@ class BackyardHttp
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         // TODO refactor two error handling codes to just one
         if ($socket === false) {
-            $socketLastError = socket_last_error($socket);
+            $socketLastError = socket_last_error(); // resource is not available
             // http://stackoverflow.com/questions/7979567/
             // php-convert-any-string-to-utf-8-without-knowing-the-original-character-set-or
             $socketLastErrorString = trim(
@@ -366,13 +377,20 @@ class BackyardHttp
                     socket_strerror($socketLastError)
                 )
             );
-            $this->logger->log(3, "socket_connect to $host $path failed with {$socketLastError}: {$socketLastErrorString}");
+            $this->logger->log(
+                3,
+                "socket_connect to $host $path failed with {$socketLastError}: {$socketLastErrorString}"
+            );
             return 'SOCKET_error';
         }
         $socketResult = socket_connect($socket, $address, $port);
         if ($socketResult) {
             socket_write($socket, $request, strlen($request));
             $socketRead = socket_read($socket, 1024);
+            if (!$socketRead) {
+                $this->logger->log(3, "socket_read from $host $path failed");
+                return 'SOCKET_READ_error';
+            }
             $response = explode(' ', $socketRead);
             $this->logger->log(self::LOG_LEVEL, "HEAD HTTP response: " . print_r($response, true), array(16));
             // 120427, if the result is not number, maybe the server doesn't understand HEAD, let's try GET
@@ -433,10 +451,15 @@ class BackyardHttp
     public function getHTTPstatusCodeByUA($URL_STRING, $userAgent = "GetStatusCode/1.1")
     {
         $url = parse_url($URL_STRING);
-        //if (!isset($url['scheme'])) {
-        if (!array_key_exists('scheme', $url)) {
-            $this->logger->log(self::LOG_LEVEL, "No scheme present", array(16));
+        if (!url) {
+            $this->logger->log(self::LOG_LEVEL, "{$URL_STRING} parsing failed", array(16));
             return 0;
+        }
+        foreach (array('scheme', 'host', 'path') as $component) {
+            if (!array_key_exists($component, $url)) {
+                $this->logger->log(self::LOG_LEVEL, "No $component present", array(16));
+                return 0;
+            }
         }
         if ($url['scheme'] != 'http') {
             $this->logger->log(
@@ -444,11 +467,6 @@ class BackyardHttp
                 "Scheme: {$url['scheme']} not supported by GetHTTPstatusCode",
                 array(16)
             );
-            return 0;
-        }
-        // todo refactor if PHPStan allows it
-        if (!array_key_exists('host', $url)) {
-            $this->logger->log(self::LOG_LEVEL, "host missing", array(16));
             return 0;
         }
 
@@ -466,7 +484,7 @@ class BackyardHttp
         $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         if ($socket && socket_connect($socket, $address, $port)) {
             socket_write($socket, $request, strlen($request));
-            $response = explode(' ', socket_read($socket, 1024));
+            $response = explode(' ', (string) socket_read($socket, 1024));
             $this->logger->log(self::LOG_LEVEL, "HTTP response: " . print_r($response, true), array(16));
             socket_close($socket);
             return (int) $response[1];
