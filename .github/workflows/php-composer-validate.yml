@@ -1,4 +1,4 @@
-name: PHP Composer
+name: PHP Composer / PHPUnit
 
 on: [push, pull_request]
 jobs:
