@@ -169,8 +169,9 @@ class BackyardHttp
      * @param array<mixed> $postArray OPTIONAL parameters to be POST-ed as the normal
      *     application/x-www-form-urlencoded string
      * @param string $customRequest OPTIONAL fills in CURLOPT_CUSTOMREQUEST
-     * @return array<array, string> ('message_body', 'HTTP_CODE', 'CONTENT_TYPE', 'HEADER_FIELDS', ['REDIRECT_URL',])
-     * @throws \Exception If $customHeaders are neither false nor string
+     * @return array<array, int, string>
+     *     ['message_body', 'HTTP_CODE', 'CONTENT_TYPE', 'HEADER_FIELDS', ['REDIRECT_URL',]]
+     * @throws \Exception if $customHeaders are neither false nor string
      */
     public function getData(
         $url,
@@ -249,13 +250,13 @@ class BackyardHttp
         $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
         $data['HTTP_CODE'] = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE); // 0 when timeout
         if ($response) {
-            $data['message_body'] = substr($response, $header_size);
+            $data['message_body'] = substr((string) $response, $header_size);
         }
         //redirects may have empty body
         if (
             !$response ||
-            ((!array_key_exists('message_body', $data) || !$data['message_body']) //
-            && !in_array($data['HTTP_CODE'], array(301, 302)))
+            ((!array_key_exists('message_body', $data) || !$data['message_body']) && //
+            !in_array($data['HTTP_CODE'], array(301, 302)))
         ) {
             $this->logger->log(2, "Curl error: " . curl_error($ch) . " on {$url} with HTTP_CODE={$data['HTTP_CODE']}");
             if (count($data) > 1) {
@@ -325,7 +326,7 @@ class BackyardHttp
     {
         $localDNSserver = array('81.31.47.101'); // @TODO - make configurable!
         $url = parse_url($URL_STRING);
-        if (!url) {
+        if ($url === false) {
             $this->logger->log(self::LOG_LEVEL, "{$URL_STRING} parsing failed", array(16));
             return 0;
         }
@@ -401,7 +402,7 @@ class BackyardHttp
                     . "\r\n";
 
                 socket_write($socket, $request, strlen($request));
-                $response = explode(' ', socket_read($socket, 1024));
+                $response = explode(' ', (string) socket_read($socket, 1024));
                 $this->logger->log(self::LOG_LEVEL, "GET HTTP response: " . print_r($response, true), array(16));
                 if (!is_numeric($response[1])) {
                     $this->logger->log(
@@ -451,7 +452,7 @@ class BackyardHttp
     public function getHTTPstatusCodeByUA($URL_STRING, $userAgent = "GetStatusCode/1.1")
     {
         $url = parse_url($URL_STRING);
-        if (!url) {
+        if ($url === false) {
             $this->logger->log(self::LOG_LEVEL, "{$URL_STRING} parsing failed", array(16));
             return 0;
         }
