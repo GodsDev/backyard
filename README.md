@@ -5,6 +5,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/godsdev/backyard.svg)](https://packagist.org/packages/godsdev/backyard)
 [![Latest Stable Version](https://img.shields.io/packagist/v/godsdev/backyard.svg)](https://packagist.org/packages/godsdev/backyard)
 ![Lint Code Base](https://github.com/GodsDev/backyard/workflows/Lint%20Code%20Base/badge.svg)
+![PHP Composer + PHPUnit](https://github.com/GodsDev/backyard/workflows/PHP%20Composer/badge.svg)
 
 
 ## Requirements
