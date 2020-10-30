@@ -91,7 +91,7 @@ class BackyardMysqli extends \mysqli
      * @param int $errorLogOutput optional default=1 turn-off=0
      *   It is int in order to be compatible with
      *   parameter $resultmode (int) of method mysqli::query()
-     * @return mixed \mysqli_result|false
+     * @return bool|\mysqli_result \mysqli_result|false
      */
     public function query($sql, $errorLogOutput = 1)
     {
@@ -124,8 +124,8 @@ class BackyardMysqli extends \mysqli
      * temporary note: Replaces customMySQLQuery()
      *
      * @param string $sql
-     * @param boolean $justOneRow (default = false)
-     * @return mixed
+     * @param bool $justOneRow (default = false)
+     * @return array|bool
      *      false - if no results
      *      one dimensional array - if $justOneRow == true
      *      two dimensional array - if $justOneRow == false

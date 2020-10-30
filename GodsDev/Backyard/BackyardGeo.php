@@ -217,9 +217,9 @@ class BackyardGeo
      * Returns the list of POI from the requested category(-ies)
      * @todo - limit by lat/lng not to return all POIs
      *
-     * @param mixed $poiCategory (may be integer or string with comma separated integers)
+     * @param int|string $poiCategory (may be integer or string with comma separated integers)
      * @param BackyardMysqli $poiConnection
-     * @return mixed array|false
+     * @return array|bool array|false
      *
      * bacykard_getListOfPOINearby ($poiCategory, $lat , $long) might be created to preselect from the database
      * only those that do not overpass the perpendicular backyardGeo['rough_distance_limit']

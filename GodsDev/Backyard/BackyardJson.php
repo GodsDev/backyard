@@ -86,7 +86,7 @@ class BackyardJson
      * @param   bool    $assoc   When true, returned objects will be converted into associative arrays.
      * @param   int     $depth   User specified recursion depth. (>=5.3)
      * @param   int     $options Bitmask of JSON decode options. (>=5.4)
-     * @return  mixed array or null is returned if the json cannot be decoded
+     * @return  array|null array or null is returned if the json cannot be decoded
      *                              or if the encoded data is deeper than the recursion limit.
      */
     public function jsonCleanDecode($json2decode, $assoc = false, $depth = 512, $options = 0)
@@ -116,7 +116,7 @@ class BackyardJson
      * @param int $timeout OPTIONAL
      * @param bool $customHeaders OPTIONAL
      * @param array $postArray OPTIONAL
-     * @return mixed array|bool array if cURL($url) returns JSON else false
+     * @return array|bool array if cURL($url) returns JSON else false
      */
     public function getJsonAsArray(
         $url,

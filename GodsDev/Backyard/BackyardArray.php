@@ -48,7 +48,7 @@ class BackyardArray
      *
      * @param string $needle
      * @param array $haystack
-     * @return boolean
+     * @return bool
      */
     public function inArrayWildcards($needle, array $haystack)
     {
@@ -147,7 +147,7 @@ class BackyardArray
      * @param string $columnName
      * @param bool $allExactMatches - default false; if true function returns array with all exact matches
      * @param bool $columnAlwaysExpected - default true; false: the missing column in a row isn't logged as an error
-     * @return mixed (array if found, false otherwise)
+     * @return array|bool (array if found, false otherwise)
      */
     public function arrayVlookup(
         $searchedValue,
@@ -188,7 +188,7 @@ class BackyardArray
      *
      * @param array $array1
      * @param array $array2
-     * @return mixed (array|0)
+     * @return array|int (array|0)
      */
     public function arrayDiffAssocRecursive(array $array1, array $array2)
     {

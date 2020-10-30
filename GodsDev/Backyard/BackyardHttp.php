@@ -162,8 +162,8 @@ class BackyardHttp
      * @param string $url
      * @param string $useragent default = 'PHP/cURL'
      * @param int $timeout [seconds] default =5
-     * @param mixed $customHeaders string|false default = false;
-     *                             string of HTTP headers delimited by pipe without trailing spaces
+     * @param bool|string $customHeaders string|false default = false;
+     *                                   string of HTTP headers delimited by pipe without trailing spaces
      * @param array $postArray OPTIONAL parameters to be POST-ed as the normal application/x-www-form-urlencoded string
      * @param string $customRequest OPTIONAL fills in CURLOPT_CUSTOMREQUEST
      * @return array ('message_body', 'HTTP_CODE', 'CONTENT_TYPE', 'HEADER_FIELDS', ['REDIRECT_URL',])

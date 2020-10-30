@@ -38,7 +38,6 @@ class BackyardJsonTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers GodsDev\Backyard\BackyardJson::minifyJSON
-     * @todo   Implement testMinifyJSON().
      */
     public function testMinifyJSON()
     {
@@ -50,7 +49,6 @@ class BackyardJsonTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers GodsDev\Backyard\BackyardJson::minifyJSON
-     * @todo   Implement testMinifyJSON().
      */
     public function testMinifyJSONInvalid()
     {
@@ -75,7 +73,6 @@ class BackyardJsonTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers GodsDev\Backyard\BackyardJson::jsonCleanDecode
-     * @todo   Implement testJsonCleanDecode().
      */
     public function testJsonCleanDecode()
     {
@@ -90,7 +87,6 @@ class BackyardJsonTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers GodsDev\Backyard\BackyardJson::getJsonAsArray
-     * @todo   Implement testGetJsonAsArray().
      */
     public function testGetJsonAsArray()
     {

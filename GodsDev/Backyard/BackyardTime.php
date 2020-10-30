@@ -9,7 +9,7 @@ class BackyardTime
 
     public function __construct()
     {
-        $this->PageTimestamp = $this->getmicrotime(); //initialisation
+        $this->PageTimestamp = $this->getmicrotime(); // initialisation
     }
 
     /**
