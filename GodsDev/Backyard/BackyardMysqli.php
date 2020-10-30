@@ -125,7 +125,7 @@ class BackyardMysqli extends \mysqli
      *
      * @param string $sql
      * @param bool $justOneRow (default = false)
-     * @return array<mixed>|bool
+     * @return array<mixed>|false
      *      false - if no results
      *      one dimensional array - if $justOneRow == true
      *      two dimensional array - if $justOneRow == false

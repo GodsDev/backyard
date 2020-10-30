@@ -39,7 +39,7 @@ class BackyardJson
      *
      * @param string $jsonInput
      * @param int $logLevel - optional - default is not to be verbose
-     * @return string|false
+     * @return string
      */
     public function minifyJSON($jsonInput, $logLevel = 5)
     {
@@ -85,7 +85,7 @@ class BackyardJson
      * @param   bool    $assoc   When true, returned objects will be converted into associative arrays.
      * @param   int     $depth   User specified recursion depth. (>=5.3)
      * @param   int     $options Bitmask of JSON decode options. (>=5.4)
-     * @return  array|false array or false is returned if the json cannot be decoded
+     * @return  array<mixed>|false array or false is returned if the json cannot be decoded
      *                              or if the encoded data is deeper than the recursion limit.
      */
     public function jsonCleanDecode($json2decode, $assoc = false, $depth = 512, $options = 0)
@@ -94,7 +94,7 @@ class BackyardJson
         $json = preg_replace("#(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|([\s\t]//.*)|(^//.*)#", '', $json2decode);
         if (is_null($json)) {
             $this->logger->log(5, "Invalid JSON: " . $json2decode);
-            return false; //invalid JSON
+            return false; // invalid JSON
         }
 
         if (version_compare((string) phpversion(), '5.4.0', '>=')) {
@@ -106,7 +106,7 @@ class BackyardJson
         }
         if (is_null($json)) {
             $this->logger->log(5, "Invalid JSON: " . $json2decode);
-            return false; //invalid JSON
+            return false; // invalid JSON
         }
         return $json;
     }
@@ -117,9 +117,9 @@ class BackyardJson
      * @param string $url
      * @param string $useragent OPTIONAL
      * @param int $timeout OPTIONAL
-     * @param bool $customHeaders OPTIONAL
+     * @param string|false $customHeaders OPTIONAL
      * @param array<mixed> $postArray OPTIONAL
-     * @return array|bool array if cURL($url) returns JSON else false
+     * @return array<mixed>|false array if cURL($url) returns JSON else false
      */
     public function getJsonAsArray(
         $url,
@@ -130,8 +130,8 @@ class BackyardJson
     ) {
         $result = $this->backyardHttp->getData($url, $useragent, $timeout, $customHeaders, $postArray);
         $json = $result['message_body'];
-        if (!$json) {
-            $this->logger->log(2, "No content on {$url}");
+        if (!$json || !is_string($json)) {
+            $this->logger->log(2, "No valid content on {$url}");
             return false;
         }
         $jsonArray = $this->jsonCleanDecode($json, true);

@@ -23,7 +23,7 @@ class BackyardGeo
     /**
      *
      * @param LoggerInterface $logger
-     * @param array $backyardConfConstruct
+     * @param array<array> $backyardConfConstruct
      */
     public function __construct(LoggerInterface $logger, array $backyardConfConstruct = array())
     {
@@ -219,7 +219,7 @@ class BackyardGeo
      *
      * @param int|string $poiCategory (may be integer or string with comma separated integers)
      * @param BackyardMysqli $poiConnection
-     * @return array|false
+     * @return array<array>|false
      *
      * bacykard_getListOfPOINearby ($poiCategory, $lat , $long) might be created to preselect from the database
      * only those that do not overpass the perpendicular backyardGeo['rough_distance_limit']
@@ -230,7 +230,7 @@ class BackyardGeo
         $query = "SELECT * FROM `{$this->backyardConf['geo_poi_list_table_name']}`"
             . " WHERE `category` IN ( " . (string) $poiCategorySecured . " )";
         $listOfPOINearby = $poiConnection->queryArray($query);
-        if (!is_array($listOfPOINearby)) {
+        if (!$listOfPOINearby) {
             $this->logger->log(2, 'No result for query ' . $query, array(11));
         } else {
             $this->logger->log(4, 'Count of rows listOfPOINearby: ' . count($listOfPOINearby), array(11));

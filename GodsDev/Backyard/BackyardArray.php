@@ -67,7 +67,7 @@ class BackyardArray
      * @param array<array> $myArray at least two-dimensional
      * @param string $columnName
      * @param bool $columnAlwaysExpected default false; true => function logs the missing column in a row as an error
-     * @return array
+     * @return array<mixed>
      */
     public function getOneColumnFromArray(array $myArray, $columnName, $columnAlwaysExpected = false)
     {
@@ -90,7 +90,7 @@ class BackyardArray
      *
      * @param array<array> $myArray
      * @param string $columnName
-     * @return array
+     * @return array<array>
      */
     public function removeOneColumnFromArray(array $myArray, $columnName)
     {
@@ -121,7 +121,7 @@ class BackyardArray
      */
     public function dumpArrayAsOneLine(array $myArray)
     {
-        return preg_replace(
+        return (string) preg_replace(
             '/\n/',
             ' ',
             (string) preg_replace(
@@ -145,7 +145,7 @@ class BackyardArray
      * @param string $columnName
      * @param bool $allExactMatches - default false; if true function returns array with all exact matches
      * @param bool $columnAlwaysExpected - default true; false: the missing column in a row isn't logged as an error
-     * @return array|false (array if found, false otherwise)
+     * @return array<mixed>|false (array if found, false otherwise)
      */
     public function arrayVlookup(
         $searchedValue,
@@ -184,9 +184,9 @@ class BackyardArray
       Contributors included (Michael Johnson), (jochem AT iamjochem DAWT com),
       (sc1n AT yahoo DOT com), and (anders DOT carlsson AT mds DOT mdh DOT se).]
      *
-     * @param array $array1
-     * @param array $array2
-     * @return array|int (array|0)
+     * @param array<mixed> $array1
+     * @param array<mixed> $array2
+     * @return array<mixed>|int (array|0)
      */
     public function arrayDiffAssocRecursive(array $array1, array $array2)
     {

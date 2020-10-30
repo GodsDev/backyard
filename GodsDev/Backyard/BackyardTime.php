@@ -35,6 +35,9 @@ class BackyardTime
      */
     public function getPageTimestamp()
     {
+        if (is_null($this->pageTimestamp)) {
+            $this->pageTimestamp = $this->getmicrotime(); // initialisation, so that it can't return null
+        }
         return $this->pageTimestamp;
     }
 
