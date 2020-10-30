@@ -5,6 +5,7 @@ namespace GodsDev\Backyard;
 class BackyardTime
 {
 
+    /** @var float|null */
     private $PageTimestamp = null;
 
     public function __construct()
@@ -21,7 +22,7 @@ class BackyardTime
      */
     public function getmicrotime()
     {
-        if (version_compare(phpversion(), '5.0.0') == -1) {
+        if (version_compare((string) phpversion(), '5.0.0') == -1) {
             list($usec, $sec) = explode(' ', microtime());
             return ((float) $usec + (float) $sec);
         } else {

@@ -39,7 +39,7 @@ class BackyardJson
      *
      * @param string $jsonInput
      * @param int $logLevel - optional - default is not to be verbose
-     * @return string
+     * @return string|false
      */
     public function minifyJSON($jsonInput, $logLevel = 5)
     {
@@ -86,17 +86,21 @@ class BackyardJson
      * @param   bool    $assoc   When true, returned objects will be converted into associative arrays.
      * @param   int     $depth   User specified recursion depth. (>=5.3)
      * @param   int     $options Bitmask of JSON decode options. (>=5.4)
-     * @return  array|null array or null is returned if the json cannot be decoded
+     * @return  array|false array or false is returned if the json cannot be decoded
      *                              or if the encoded data is deeper than the recursion limit.
      */
     public function jsonCleanDecode($json2decode, $assoc = false, $depth = 512, $options = 0)
     {
         // search and remove comments like /* */ and //
         $json = preg_replace("#(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|([\s\t]//.*)|(^//.*)#", '', $json2decode);
+        if (is_null($json)) {
+            $this->logger->log(5, "Invalid JSON: " . $json2decode);
+            return false; //invalid JSON
+        }
 
-        if (version_compare(phpversion(), '5.4.0', '>=')) {
+        if (version_compare((string) phpversion(), '5.4.0', '>=')) {
             $json = json_decode($json, $assoc, $depth, $options);
-        } elseif (version_compare(phpversion(), '5.3.0', '>=')) {
+        } elseif (version_compare((string) phpversion(), '5.3.0', '>=')) {
             $json = json_decode($json, $assoc, $depth);
         } else {
             $json = json_decode($json, $assoc);
