@@ -1,0 +1,23 @@
+name: PHP8
+on: [push, pull_request]
+jobs:
+  phplint:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Setup nightly PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: '8.1'
+            extensions: mbstring
+            ini-values: opcache.jit_buffer_size=256M, opcache.jit=1235, pcre.jit=1
+            coverage: pcov
+            tools: php-cs-fixer, phpunit
+
+        - name: Install dependencies
+          run: composer install --prefer-dist
+
+        - name: Test with phpunit
+          run: vendor/bin/phpunit --coverage-text
