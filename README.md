@@ -1,5 +1,7 @@
 # Library In Backyard
 
+ABANDONED - use [workofstan/backyard](https://github.com/WorkOfStan/backyard) instead, where it is actively maintained.
+
 **Collection of useful functions**
 
 [![Total Downloads](https://img.shields.io/packagist/dt/godsdev/backyard.svg)](https://packagist.org/packages/godsdev/backyard)
